@@ -10,34 +10,27 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+
 @Entity
-@Data
 @Table(name = "usuario")
+@Data
 public class Usuario
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_usuario")
-	private Integer codigo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idUsuario;                 
+   
+    private String dni;
+    private String nombres;
+    private String apellidos;
+    private String correo;
 
-	private String dni;
+    @Column(name = "password")                 
+    private String clave;                     
     
-	private String nombres;
-	
-	private String apellidos;
-	
-	private String correo;
-	
-	@Column(name = "password")
-	private String contrasena;
-	
-	private String telefono;
-	
-	private String rol;
-	
-	private Boolean disponible;
-	
-	private LocalDateTime ultimaAsignacion;
-	
-	private Boolean activo;
+    private String telefono;
+    private String rol;                        
+    private Boolean disponible = true;         
+    private LocalDateTime ultimaAsignacion;    
+    private Boolean activo = true;   
 }
