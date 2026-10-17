@@ -1,0 +1,92 @@
+/* =====================================================================
+   Hoja de estilos - LicenControl de la Municipalidad Distrital de Independencia
+   ===================================================================== */
+
+/* ================= PALETA DE LA MUNICIPALIDAD ================= */
+:root {
+  --muni-azul-noche: #0A2559;
+  --muni-azul-oscuro: #00367A;
+  --muni-azul: #015BC1;
+  --muni-celeste: #3CA6F2;
+  --muni-amarillo: #F1BA2B;
+  --muni-verde: #209C54;
+  --muni-rojo: #DA3431;
+
+  --fondo: #F2F5FA;
+  --texto: #10234A;
+  --gris: #6B7280;
+  --borde: #D9DCE5;
+}
+
+/* ================= BASE ================= */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Poppins', sans-serif; color: var(--texto); }
+a { text-decoration: none; }
+
+/* El login usa fondo blanco; el sistema interno (después) usará gris claro. */
+body.login-body { background: #fff; min-height: 100vh; }
+
+/* =====================================================================
+   1. LOGIN
+   ===================================================================== */
+.login-page { min-height: 100vh; }
+
+/* ---------- Mitad izquierda: marca ---------- */
+.panel-marca {
+  position: relative; overflow: hidden; color: #fff;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(60,166,242,.35) 0%, transparent 45%),
+    linear-gradient(155deg, var(--muni-azul-noche) 0%, var(--muni-azul-oscuro) 50%, var(--muni-azul) 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 48px 40px; text-align: center;
+}
+.panel-marca::before {                 /* puntitos decorativos */
+  content: ""; position: absolute; top: 40px; right: 40px; width: 140px; height: 140px;
+  background-image: radial-gradient(rgba(255,255,255,.25) 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+.panel-marca::after {                  /* círculo decorativo */
+  content: ""; position: absolute; bottom: -120px; left: -120px; width: 320px; height: 320px;
+  border: 1px solid rgba(255,255,255,.15); border-radius: 50%;
+}
+.franja {                              /* franja con los colores del logo */
+  position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
+  background: linear-gradient(90deg,
+    var(--muni-amarillo) 0 33.3%, var(--muni-verde) 33.3% 66.6%, var(--muni-rojo) 66.6% 100%);
+}
+.login-logo {
+  width: 130px; height: 130px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+}
+.login-logo i   { font-size: 3rem; color: var(--muni-amarillo); }
+.login-logo img { width: 100%; height: 100%; object-fit: contain; }
+.marca-nombre { font-weight: 700; font-style: italic; font-size: 2.1rem; color: var(--muni-amarillo); margin: 0; }
+.marca-sub { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; font-weight: 700; opacity: .9; margin-top: 6px; }
+.separador { display: flex; align-items: center; gap: 12px; width: 220px; margin: 56px auto 32px;; color: var(--muni-amarillo); }
+.separador::before, .separador::after { content: ""; flex: 1; height: 1px; background: rgba(241,186,43,.6); }
+.lema { font-family: 'Caveat', cursive; font-size: 1.6rem; line-height: 1.3; max-width: 360px; }
+.valores { display: flex; gap: 40px; justify-content: center; margin-top: 64px;; position: relative; z-index: 1; }
+.valores div { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.valores i { display: block; font-size: 1.5rem; color: var(--muni-amarillo); margin-bottom: 6px; }
+
+/* ---------- Mitad derecha: formulario ---------- */
+.panel-form { display: flex; align-items: center; justify-content: center; padding: 48px 24px; background: #fff; }
+.form-caja { width: 100%; max-width: 400px; }
+.login-titulo { font-weight: 700; font-size: 2rem; color: var(--muni-azul-oscuro); margin-bottom: 4px; }
+.login-titulo span { color: var(--muni-azul); }
+.login-subtitulo { color: var(--gris); margin-bottom: 32px; }
+.form-caja .form-label { font-weight: 700; font-size: .9rem; }
+.campo { position: relative; }
+.campo > i.icono { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muni-azul-oscuro); }
+.campo .form-control { height: 52px; border-radius: 26px; border: 1.5px solid var(--borde); padding-left: 48px; padding-right: 48px; }
+.campo .form-control:focus { border-color: var(--muni-azul); box-shadow: 0 0 0 .2rem rgba(1,91,193,.15); }
+.ver-clave { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); border: 0; background: none; color: var(--gris); }
+.olvido { color: var(--muni-azul); font-weight: 700; font-size: .85rem; }
+.btn-ingresar {
+  height: 52px; border: 0; border-radius: 26px; color: #fff; font-weight: 700; transition: filter .2s;
+  background: linear-gradient(90deg, var(--muni-azul-noche) 0%, var(--muni-azul) 100%);
+}
+.btn-ingresar:hover { filter: brightness(1.15); color: #fff; }
+.login-registro { text-align: center; margin-top: 24px; color: var(--gris); }
+.login-registro a { color: var(--muni-azul); font-weight: 700; }
+.login-pie { text-align: center; color: var(--gris); font-size: .8rem; margin-top: 40px; }
