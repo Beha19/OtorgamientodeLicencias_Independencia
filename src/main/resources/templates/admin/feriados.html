@@ -8,7 +8,6 @@
 	</head>
 
 	<body class="bg-light">
-		
 		<div class="container py-4">
 			<h1 class="h3">Sistema de Licencias de Funcionamiento</h1>
 			<p class="text-muted">Municipalidad de Independencia</p>
@@ -20,22 +19,32 @@
 					<h2 class="h4 mb-1">Feriados</h2>
 					<p class="text-muted">Se usan para calcular los plazos en días hábiles.</p>
 
-					
-					<form action="#" method="post" class="row g-3 align-items-end mb-4">
+					<div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}"></div>
+					<div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+					<form th:action="@{/admin/feriados/guardar}" th:object="${feriado}" method="post"
+						class="row g-3 align-items-start mb-4" novalidate>
+						<input type="hidden" th:field="*{edicion}">
+
 						<div class="col-md-4">
 							<label for="fecha" class="form-label">Fecha</label>
-							<input type="date" class="form-control" id="fecha" name="fecha">
+							<input type="date" class="form-control" th:field="*{fecha}" th:readonly="*{edicion}"
+								th:classappend="${#fields.hasErrors('fecha')} ? 'is-invalid'">
+							<div class="text-danger small" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></div>
 						</div>
 						<div class="col-md-5">
 							<label for="descripcion" class="form-label">Descripción</label>
-							<input type="text" class="form-control" id="descripcion" name="descripcion" maxlength="100">
+							<input type="text" class="form-control" th:field="*{descripcion}" maxlength="100"
+								th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid'">
+							<div class="text-danger small" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
 						</div>
-						<div class="col-md-3">
-							<button type="submit" class="btn btn-primary w-100">Agregar</button>
+						<div class="col-md-3 pt-md-4 mt-md-1">
+							<button type="submit" class="btn btn-primary"
+								th:text="*{edicion} ? 'Actualizar' : 'Agregar'">Agregar</button>
+							<a th:href="@{/admin/feriados}" class="btn btn-secondary" th:if="*{edicion}">Cancelar</a>
 						</div>
 					</form>
 
-					
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered align-middle">
 							<thead class="table-light">
@@ -46,35 +55,21 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>2026-10-08</td>
-									<td>Combate de Angamos</td>
+								<tr th:each="f : ${feriados}">
+									<td th:text="${f.fecha}"></td>
+									<td th:text="${f.descripcion}"></td>
 									<td>
-										<a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
-										<form action="#" method="post" class="d-inline">
+										<a th:href="@{/admin/feriados/{fecha}/editar(fecha=${f.fecha})}"
+											class="btn btn-sm btn-outline-secondary">Editar</a>
+										<form th:action="@{/admin/feriados/{fecha}/eliminar(fecha=${f.fecha})}"
+											method="post" class="d-inline"
+											onsubmit="return confirm('¿Eliminar este feriado?');">
 											<button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
 										</form>
 									</td>
 								</tr>
-								<tr>
-									<td>2026-11-01</td>
-									<td>Todos los Santos</td>
-									<td>
-										<a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
-										<form action="#" method="post" class="d-inline">
-											<button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-										</form>
-									</td>
-								</tr>
-								<tr>
-									<td>2026-12-25</td>
-									<td>Navidad</td>
-									<td>
-										<a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
-										<form action="#" method="post" class="d-inline">
-											<button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-										</form>
-									</td>
+								<tr th:if="${#lists.isEmpty(feriados)}">
+									<td colspan="3" class="text-center text-muted">No hay feriados registrados.</td>
 								</tr>
 							</tbody>
 						</table>
