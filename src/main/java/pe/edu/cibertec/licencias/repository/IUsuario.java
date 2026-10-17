@@ -8,5 +8,7 @@ import pe.edu.cibertec.licencias.entity.Usuario;
 @Repository
 public interface IUsuario extends JpaRepository<Usuario, Integer>
 {
+	boolean existsByDni(String dni);
 
+	boolean existsByCorreo(String correo);
 }
