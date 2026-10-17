@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Piezas comunes de todas las páginas internas. Cada página las inserta con th:replace. -->
+
+<!-- ================= HEAD: CSS, fuentes e iconos ================= -->
+<head th:fragment="head(titulo)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${titulo}">LicenControl</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body>
+
+	<!-- ================= UNA LÍNEA DEL MENÚ =================
+	     url: adónde lleva | icono: Bootstrap Icons | texto: lo que se lee
+	     clave: identifica la opción | activo: clave de la página actual (si coincide, se resalta) -->
+	<a th:fragment="enlace(url, icono, texto, clave, activo)"
+	   class="nav-link" th:href="${url}" th:classappend="${clave == activo} ? 'active'">
+	  <i class="bi" th:classappend="${icono}"></i>
+	  <span th:text="${texto}">Opción</span>
+	</a>
+	
+	<!-- ================= SIDEBAR (el menú cambia según el rol de la sesión) ================= -->
+	<aside th:fragment="sidebar(activo)" class="sidebar">
+	  <div class="marca">
+	    <div class="logo">
+	      <img th:src="@{/img/LogoMuni.png}" alt="Logo"
+	           onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'bi bi-bank2'}))">
+	    </div>
+	    <div><small>Municipalidad Distrital de</small><strong>INDEPENDENCIA</strong><em>LicenControl</em></div>
+	  </div>
+	
+	  <nav th:switch="${session.usuario.rol}">
+	
+	    <th:block th:case="'SOLICITANTE'">
+	      <a th:replace="~{this :: enlace(@{/solicitante/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-file-earmark-text', 'Trámites', 'tramites', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-folder', 'Mis expedientes', 'expedientes', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-credit-card', 'Mis pagos', 'pagos', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-bell', 'Notificaciones', 'notificaciones', ${activo})}"></a>
+	      <div class="menu-titulo">Cuenta</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-person', 'Mi cuenta', 'cuenta', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-question-circle', 'Ayuda', 'ayuda', ${activo})}"></a>
+	    </th:block>
+	
+	    <th:block th:case="'REVISOR'">
+	      <a th:replace="~{this :: enlace(@{/revisor/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
+	      <div class="menu-titulo">Procesos</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-inbox', 'Bandeja de revisión', 'bandeja', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-folder2-open', 'Expedientes', 'expedientes', ${activo})}"></a>
+	      <div class="menu-titulo">Cuenta</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-bell', 'Notificaciones', 'notificaciones', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-person', 'Mi cuenta', 'cuenta', ${activo})}"></a>
+	    </th:block>
+	
+	    <th:block th:case="'TECNICO'">
+	      <a th:replace="~{this :: enlace(@{/tecnico/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
+	      <div class="menu-titulo">Procesos</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-clipboard-data', 'Bandeja de evaluación', 'bandeja', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-folder2-open', 'Expedientes', 'expedientes', ${activo})}"></a>
+	      <div class="menu-titulo">Cuenta</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-bell', 'Notificaciones', 'notificaciones', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-person', 'Mi cuenta', 'cuenta', ${activo})}"></a>
+	    </th:block>
+	
+	    <th:block th:case="'SUBGERENTE'">
+	      <a th:replace="~{this :: enlace(@{/subgerente/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
+	      <div class="menu-titulo">Procesos</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-pen', 'Bandeja de firma', 'bandeja', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-folder2-open', 'Expedientes', 'expedientes', ${activo})}"></a>
+	      <div class="menu-titulo">Reportes</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-award', 'Licencias emitidas', 'licencias', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-file-earmark-pdf', 'Reportes', 'reportes', ${activo})}"></a>
+	      <div class="menu-titulo">Cuenta</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-person', 'Mi cuenta', 'cuenta', ${activo})}"></a>
+	    </th:block>
+	
+	    <th:block th:case="'ADMIN'">
+	      <a th:replace="~{this :: enlace(@{/admin/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
+	      <div class="menu-titulo">Mantenimientos</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-people', 'Usuarios', 'usuarios', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-geo-alt', 'Giros y zonas', 'giros', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace('#', 'bi-calendar-event', 'Feriados', 'feriados', ${activo})}"></a>
+	      <div class="menu-titulo">Cuenta</div>
+	      <a th:replace="~{this :: enlace('#', 'bi-person', 'Mi cuenta', 'cuenta', ${activo})}"></a>
+	    </th:block>
+	
+	  </nav>
+	
+	  <div class="pie">
+	    <img class="dibujo" th:src="@{/img/Diagrama.png}" alt="">
+	    <div class="subgerencia">Subgerencia de Formalización Empresarial, Comercialización y Licencias</div>
+	    <div class="franja-muni"></div>
+	  </div>
+	</aside>
+	
+	<!-- ================= CABECERA (saludo y reloj los completa layout.js) ================= -->
+	<header th:fragment="encabezado" class="encabezado">
+	  <div class="saludo">
+	    <i class="clima bi" id="clima"></i>
+	    <div>
+	      <h1 id="saludo" th:attr="data-nombre=${session.usuario.primerNombre}">¡Hola!</h1>
+	      <p>Bienvenido(a) a LicenControl - Municipalidad de Independencia</p>
+	    </div>
+	  </div>
+	  <div class="herramientas">
+	    <span class="d-none d-lg-inline"><i class="bi bi-calendar3 me-1"></i><span id="fecha"></span></span>
+	    <span class="sep d-none d-lg-block"></span>
+	    <span class="d-none d-lg-inline"><i class="bi bi-clock me-1"></i><span id="hora"></span></span>
+	    <span class="sep"></span>
+	    <a class="campana" href="#"><i class="bi bi-bell"></i><span>2</span></a>
+	    <span class="sep"></span>
+	    <div class="dropdown">
+	      <div class="usuario" data-bs-toggle="dropdown">
+	        <div class="avatar" th:classappend="'av-' + ${session.usuario.rol}" th:switch="${session.usuario.rol}">
+	          <i th:case="'SOLICITANTE'" class="bi bi-person"></i>
+	          <i th:case="'REVISOR'" class="bi bi-clipboard-check"></i>
+	          <i th:case="'TECNICO'" class="bi bi-tools"></i>
+	          <i th:case="'SUBGERENTE'" class="bi bi-pen"></i>
+	          <i th:case="'ADMIN'" class="bi bi-gear"></i>
+	        </div>
+	        <div class="d-none d-md-block">
+	          <strong th:text="${session.usuario.nombreCorto}">Nombre Apellido</strong>
+	          <small th:text="${#strings.capitalize(#strings.toLowerCase(session.usuario.rol))}">Rol</small>
+	        </div>
+	        <i class="bi bi-chevron-down"></i>
+	      </div>
+	      <ul class="dropdown-menu dropdown-menu-end">
+	        <li><a class="dropdown-item" href="#"><i class="bi bi-person-circle me-2"></i>Mi cuenta</a></li>
+	        <li><hr class="dropdown-divider"></li>
+	        <li><a class="dropdown-item text-danger" th:href="@{/logout}"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	</header>
+	
+	<!-- ================= PIE DE PÁGINA + BOTÓN DE ATENCIÓN ================= -->
+	<footer th:fragment="pie">
+	  <div class="pie-pagina">
+	    <span>2026 LicenControl · Municipalidad Distrital de Independencia</span><span>Versión 1.0</span>
+	  </div>
+	  <button class="chat" title="Atención al ciudadano"><i class="bi bi-chat-dots"></i></button>
+	</footer>
+	
+	<!-- ================= SCRIPTS COMUNES (van al final del body) ================= -->
+	<th:block th:fragment="scripts">
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+	  <script th:src="@{/js/graficos.js}"></script>
+	  <script th:src="@{/js/layout.js}"></script>
+	</th:block>
+
+</body>
+</html>

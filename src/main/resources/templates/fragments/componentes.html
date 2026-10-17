@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+	<!-- Tarjeta de número grande -->
+	<div th:fragment="kpi(color, icono, fondo, numero, etiqueta)" class="col-6 col-xl-3">
+	  <div class="kpi" th:classappend="${color}">
+	    <i class="bi fondo" th:classappend="${fondo}"></i>
+	    <div class="icono"><i class="bi" th:classappend="${icono}"></i></div>
+	    <div class="numero" th:text="${numero}">0</div>
+	    <div class="etiqueta" th:text="${etiqueta}">Etiqueta</div>
+	    <a href="#">Ver detalle <i class="bi bi-arrow-right"></i></a>
+	  </div>
+	</div>
+	
+	<!-- Fila con icono a la izquierda y una etiqueta de color a la derecha.
+	     chipClase: c-verde | c-amarillo | c-rojo | c-azul | c-gris (chipTexto vacío = sin etiqueta) -->
+	<div th:fragment="fila(icono, titulo, sub, chipClase, chipTexto)" class="fila">
+	  <div class="ico"><i class="bi" th:classappend="${icono}"></i></div>
+	  <div class="txt"><strong th:text="${titulo}">Título</strong><small th:text="${sub}">Detalle</small></div>
+	  <span class="chip" th:if="${chipTexto != ''}" th:classappend="${chipClase}" th:text="${chipTexto}"></span>
+	</div>
+	
+	<!-- Fila con la fecha (día y mes) a la izquierda en lugar del icono. -->
+	<div th:fragment="filaFecha(dia, mes, titulo, sub, chipClase, chipTexto)" class="fila">
+	  <div class="fecha-box"><strong th:text="${dia}">01</strong><small th:text="${mes}">ene</small></div>
+	  <div class="txt"><strong th:text="${titulo}">Título</strong><small th:text="${sub}">Detalle</small></div>
+	  <span class="chip" th:if="${chipTexto != ''}" th:classappend="${chipClase}" th:text="${chipTexto}"></span>
+</div>
+
+</body>
+</html>
