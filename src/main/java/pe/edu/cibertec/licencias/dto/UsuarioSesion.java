@@ -31,6 +31,13 @@ public class UsuarioSesion implements Serializable
         return (getPrimerNombre() + " " + apellido).trim();
     }
 
+    public String getIniciales()
+    {
+        String n = getPrimerNombre();
+        String a = apellidos == null || apellidos.isBlank() ? "" : apellidos.trim().split("\\s+")[0];
+        String ini = (n.isEmpty() ? "" : n.substring(0, 1)) + (a.isEmpty() ? "" : a.substring(0, 1));
+        return ini.toUpperCase();
+    }
     
     public String getRutaInicio()
     {

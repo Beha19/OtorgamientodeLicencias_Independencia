@@ -6,6 +6,16 @@ const COLORES = {
   amarillo: '#F1BA2B', verde: '#209C54', rojo: '#DA3431'
 };
 
+/** Ajusta los colores de texto y líneas de Chart.js según el tema (claro u oscuro) */
+function aplicarTemaGraficos() {
+  if (typeof Chart === 'undefined') return;
+  const oscuro = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+  Chart.defaults.color = oscuro ? '#A3AEC4' : '#6B7280';                       // textos
+  Chart.defaults.borderColor = oscuro ? 'rgba(255,255,255,.10)' : 'rgba(0,0,0,.08)';   // líneas de la cuadrícula
+  Object.values(Chart.instances).forEach(g => g.update());                     // redibuja los que ya existen
+}
+aplicarTemaGraficos();
+
 /** Barras: graficoBarras('g1', ['Lun','Mar'], [1, 2], COLORES.azul) */
 function graficoBarras(idCanvas, etiquetas, datos, color) {
   const canvas = document.getElementById(idCanvas);

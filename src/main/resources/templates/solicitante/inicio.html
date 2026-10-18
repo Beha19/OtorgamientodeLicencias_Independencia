@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inicio - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+	  <aside th:replace="~{fragments/layout :: sidebar('inicio')}"></aside>
+	
+	  <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+	    <header th:replace="~{fragments/layout :: encabezado}"></header>
+	
+	    <main class="flex-grow-1">
+	      <!-- DATOS DE EJEMPLO: se reemplazarán con consultas a la base cuando exista CU01 -->
+	      <div class="row g-3 mb-3"> <!-- Mis Tarjetas dinámicas -->
+	        <div th:replace="~{fragments/componentes :: kpi('k-amarillo','bi-envelope','bi-envelope',2,'Mensajes en la casilla')}"></div>
+				<div th:replace="~{fragments/componentes :: kpi('k-azul','bi-folder2-open','bi-hourglass-split',2,'En proceso')}"></div>
+				<div th:replace="~{fragments/componentes :: kpi('k-rojo','bi-exclamation-triangle','bi-exclamation-triangle',1,'Observados')}"></div>
+				<div th:replace="~{fragments/componentes :: kpi('k-verde','bi-check-lg','bi-patch-check',1,'Licencias otorgadas')}"></div>
+	      </div>
+	
+	      <div class="row g-3 mb-3">
+	        <div class="col-lg-8">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-signpost-split"></i>Mi trámite en curso · Exp. 2026-000101</h2><a href="#">Ver detalle</a></div>
+	            <div class="pasos"><div class="avance" style="width:22%"></div>
+	              <div class="paso hecho"><div class="bola"><i class="bi bi-send"></i></div>Enviado</div>
+	              <div class="paso actual"><div class="bola"><i class="bi bi-search"></i></div>Revisión</div>
+	              <div class="paso"><div class="bola"><i class="bi bi-clipboard-data"></i></div>Evaluación</div>
+	              <div class="paso"><div class="bola"><i class="bi bi-pen"></i></div>Firma</div>
+	              <div class="paso"><div class="bola"><i class="bi bi-award"></i></div>Licencia</div>
+	            </div>
+	            <div class="d-flex justify-content-between align-items-center mt-3 small">
+	              <span><strong>Bodega Don Juan</strong> · Av. Los Alisos 310</span>
+	              <span><i class="bi bi-calendar-check me-1"></i>Plazo máximo: <strong>04/11/2026</strong></span>
+	            </div>
+	          </div>
+	        </div>
+	        <div class="col-lg-4">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-plus-circle"></i>¿Tienes un negocio?</h2></div>
+	            <p class="small text-muted mb-3">Solicita tu licencia de funcionamiento para locales de hasta 100 m².</p>
+	            <a class="btn btn-muni w-100 mb-3" href="#"><i class="bi bi-file-earmark-plus me-1"></i> Nuevo trámite</a>
+	            <div class="small atencion">
+				  <div><i class="bi bi-headset me-1 text-primary"></i><strong>Atención al ciudadano</strong></div>
+				  <div><i class="bi bi-telephone me-1"></i>(01) 712-4100</div>
+				  <div><i class="bi bi-clock me-1"></i>Lun a Vie, 8 a. m. a 5 p. m.</div>
+				</div>
+	          </div>
+	        </div>
+	      </div>
+	
+	      <div class="row g-3">
+	        <div class="col-lg-7">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-folder"></i>Mis expedientes</h2><a href="#">Ver todos</a></div>
+	            <div th:replace="~{fragments/componentes :: fila('bi-pencil-square','Sabor Norteño','Borrador · aún sin enviar','c-gris','Borrador')}"></div>
+	            <div th:replace="~{fragments/componentes :: fila('bi-shop','Bodega Don Juan','Exp. 2026-000101 · enviado 14/10/2026','c-azul','En revisión')}"></div>
+	            <div th:replace="~{fragments/componentes :: fila('bi-exclamation-circle','Cevichería El Puerto','Exp. 2026-000095 · oficio OF-2026-0001','c-rojo','Observado')}"></div>
+	            <div th:replace="~{fragments/componentes :: fila('bi-award','Bodega Izaguirre','Exp. 2026-000080 · LIC-2026-0001','c-verde','Aprobado')}"></div>
+	          </div>
+	        </div>
+	        <div class="col-lg-5">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-receipt"></i>Mis pagos</h2><a href="#">Ver pagos</a></div>
+	            <div th:replace="~{fragments/componentes :: filaFecha('14','oct','Derecho de trámite','Recibo REC-2026-0101 · Tarjeta','c-verde','S/ 120.50')}"></div>
+	            <div th:replace="~{fragments/componentes :: filaFecha('15','sep','Derecho de trámite','Recibo REC-2026-0080 · Caja','c-verde','S/ 120.50')}"></div>
+	          </div>
+	        </div>
+	      </div>
+	    </main>
+	
+	    <footer th:replace="~{fragments/layout :: pie}"></footer>
+	  </div>
+	</div>
+	
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+
+</html>
