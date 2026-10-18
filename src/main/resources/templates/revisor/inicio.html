@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inicio - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+	  <aside th:replace="~{fragments/layout :: sidebar('inicio')}"></aside>
+	
+	  <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+	    <header th:replace="~{fragments/layout :: encabezado}"></header>
+	
+	    <main class="flex-grow-1">
+	      <!-- DATOS DE EJEMPLO: después se reemplazan con la bandeja real -->
+	      <div class="row g-3 mb-3">
+	        <div th:replace="~{fragments/componentes :: kpi('k-amarillo','bi-inbox','bi-inbox',3,'Pendientes de revisión')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-rojo','bi-alarm','bi-alarm',1,'Por vencer')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-verde','bi-check2-circle','bi-check2-circle',2,'Verificados esta semana')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-azul','bi-exclamation-triangle','bi-exclamation-triangle',1,'Observados')}"></div>
+	      </div>
+	
+	      <div class="row g-3 mb-3">
+	        <div class="col-lg-8">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-bar-chart"></i>Solicitudes recibidas en la semana</h2></div>
+	            <div class="grafico"><canvas id="g1"></canvas></div>
+	          </div>
+	        </div>
+	        <div class="col-lg-4">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-stoplights"></i>Semáforo de plazos</h2></div>
+	            <div class="leyenda"><span><span class="semaforo s-verde me-2"></span>A tiempo</span><strong>1</strong></div>
+	            <div class="leyenda"><span><span class="semaforo s-amarillo me-2"></span>Por vencer</span><strong>1</strong></div>
+	            <div class="leyenda"><span><span class="semaforo s-rojo me-2"></span>Vence en 3 días o menos</span><strong>1</strong></div>
+	            <a class="btn btn-muni w-100 mt-3" href="#">Ir a la bandeja de revisión</a>
+	          </div>
+	        </div>
+	      </div>
+	
+	      <div class="row g-3">
+	        <div class="col-lg-7">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-hourglass-bottom"></i>Próximos a vencer</h2><a href="#">Ver bandeja</a></div>
+	            <div class="fila"><div class="ico"><i class="bi bi-file-earmark"></i></div>
+	              <div class="txt"><strong>2026-000090 · Minimarket López</strong><small>María López · vence 20/10/2026</small></div>
+	              <span class="semaforo s-rojo"></span></div>
+	            <div class="fila"><div class="ico"><i class="bi bi-file-earmark"></i></div>
+	              <div class="txt"><strong>2026-000098 · Peluquería María</strong><small>María López · vence 26/10/2026</small></div>
+	              <span class="semaforo s-amarillo"></span></div>
+	            <div class="fila"><div class="ico"><i class="bi bi-file-earmark"></i></div>
+	              <div class="txt"><strong>2026-000101 · Bodega Don Juan</strong><small>Juan Pérez · vence 04/11/2026</small></div>
+	              <span class="semaforo s-verde"></span></div>
+	          </div>
+	        </div>
+	        <div class="col-lg-5">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-pie-chart"></i>Estado de las solicitudes</h2></div>
+	            <div class="grafico"><canvas id="g2"></canvas></div>
+	          </div>
+	        </div>
+	      </div>
+	    </main>
+	
+	    <footer th:replace="~{fragments/layout :: pie}"></footer>
+	  </div>
+	</div>
+	
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+	<script>
+	  graficoBarras('g1', ['Lun','Mar','Mié','Jue','Vie'], [1, 0, 2, 0, 1], COLORES.azul);
+	  graficoDona('g2', ['Pendientes','Observados','Verificados'], [3, 1, 2]);
+	</script>
+</body>
+
+</html>

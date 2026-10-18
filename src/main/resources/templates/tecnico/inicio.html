@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inicio - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+	  <aside th:replace="~{fragments/layout :: sidebar('inicio')}"></aside>
+	
+	  <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+	    <header th:replace="~{fragments/layout :: encabezado}"></header>
+	
+	    <main class="flex-grow-1">
+	      <!-- DATOS DE EJEMPLO: se reemplazarán con la bandeja de evaluación real -->
+	      <div class="row g-3 mb-3">
+	        <div th:replace="~{fragments/componentes :: kpi('k-amarillo','bi-clipboard-data','bi-clipboard-data',1,'Asignados a mí')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-rojo','bi-alarm','bi-alarm',1,'Por vencer')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-verde','bi-check2-circle','bi-check2-circle',3,'Aprobados este mes')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-azul','bi-x-circle','bi-x-circle',1,'Denegados este mes')}"></div>
+	      </div>
+	
+	      <div class="row g-3 mb-3">
+	        <div class="col-lg-8">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-bar-chart"></i>Evaluaciones de la semana</h2></div>
+	            <div class="grafico"><canvas id="g1"></canvas></div>
+	          </div>
+	        </div>
+	        <div class="col-lg-4">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-people"></i>Carga de los técnicos</h2></div>
+	            <p class="small text-muted">La asignación es equitativa: recibe el técnico con menos expedientes.</p>
+	            <div class="leyenda"><span><span class="semaforo s-verde me-2"></span>Carlos Ruiz (tú)</span><strong>1</strong></div>
+	            <div class="leyenda"><span><span class="semaforo s-verde me-2"></span>Lucía Torres</span><strong>1</strong></div>
+	          </div>
+	        </div>
+	      </div>
+	
+	      <div class="row g-3">
+	        <div class="col-lg-7">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-list-check"></i>Mis expedientes asignados</h2><a href="#">Ver bandeja</a></div>
+	            <div class="fila"><div class="ico"><i class="bi bi-scissors"></i></div>
+	              <div class="txt"><strong>2026-000093 · Estilos Pasaje</strong><small>Peluquería · Psje. Los Membrillos 12 · vence 21/10/2026</small></div>
+	              <a class="btn btn-sm btn-muni" href="#">Evaluar</a></div>
+	          </div>
+	        </div>
+	        <div class="col-lg-5">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-pie-chart"></i>Resultado de mis evaluaciones</h2></div>
+	            <div class="grafico"><canvas id="g2"></canvas></div>
+	          </div>
+	        </div>
+	      </div>
+	    </main>
+	
+	    <footer th:replace="~{fragments/layout :: pie}"></footer>
+	  </div>
+	</div>
+	
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+	<script>
+	  graficoBarras('g1', ['Lun','Mar','Mié','Jue','Vie'], [1, 2, 0, 1, 0], COLORES.verde);
+	  graficoDona('g2', ['Aprobados','Denegados'], [3, 1]);
+	</script>
+</body>
+
+</html>

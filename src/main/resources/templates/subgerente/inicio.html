@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inicio - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+	  <aside th:replace="~{fragments/layout :: sidebar('inicio')}"></aside>
+	
+	  <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+	    <header th:replace="~{fragments/layout :: encabezado}"></header>
+	
+	    <main class="flex-grow-1">
+	      <!-- DATOS DE EJEMPLO: se reemplazarán con la bandeja de firma real -->
+	      <div class="row g-3 mb-3">
+	        <div th:replace="~{fragments/componentes :: kpi('k-amarillo','bi-pen','bi-vector-pen',2,'Pendientes de firma')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-rojo','bi-x-circle','bi-x-circle',0,'Denegadas (mes)')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-verde','bi-award','bi-award',1,'Licencias emitidas (mes)')}"></div>
+	        <div th:replace="~{fragments/componentes :: kpi('k-azul','bi-folder2-open','bi-bank',7,'Expedientes en total')}"></div>
+	      </div>
+	
+	      <div class="row g-3 mb-3">
+	        <div class="col-lg-8">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-bar-chart"></i>Licencias emitidas por mes</h2></div>
+	            <div class="grafico"><canvas id="g1"></canvas></div>
+	          </div>
+	        </div>
+	        <div class="col-lg-4">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-diagram-3"></i>Expedientes por etapa</h2></div>
+	            <div class="leyenda"><span><span class="semaforo s-amarillo me-2"></span>En revisión</span><strong>3</strong></div>
+	            <div class="leyenda"><span><span class="semaforo s-rojo me-2"></span>Observados</span><strong>1</strong></div>
+	            <div class="leyenda"><span><span class="semaforo s-verde me-2"></span>En evaluación</span><strong>1</strong></div>
+	            <div class="leyenda"><span><span class="semaforo s-verde me-2"></span>Aprobados</span><strong>1</strong></div>
+	          </div>
+	        </div>
+	      </div>
+	
+	      <div class="row g-3">
+	        <div class="col-lg-7">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-award"></i>Últimas licencias emitidas</h2><a href="#">Ver todas</a></div>
+	            <div th:replace="~{fragments/componentes :: filaFecha('02','oct','LIC-2026-0001 · Bodega Izaguirre','Av. Carlos Izaguirre 890 · Juan Pérez','c-verde','Vigente')}"></div>
+	          </div>
+	        </div>
+	        <div class="col-lg-5">
+	          <div class="panel">
+	            <div class="panel-titulo"><h2><i class="bi bi-pie-chart"></i>Expedientes por giro</h2></div>
+	            <div class="grafico"><canvas id="g2"></canvas></div>
+	          </div>
+	        </div>
+	      </div>
+	    </main>
+	
+	    <footer th:replace="~{fragments/layout :: pie}"></footer>
+	  </div>
+	</div>
+	
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+	<script>
+	  graficoBarras('g1', ['Jul','Ago','Sep','Oct'], [0, 0, 0, 1], COLORES.amarillo);
+	  graficoDona('g2', ['Bodega','Restaurante','Peluquería'], [3, 2, 2]);
+	</script>
+</body>
+
+</html>
