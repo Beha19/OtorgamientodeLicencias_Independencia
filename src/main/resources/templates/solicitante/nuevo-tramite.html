@@ -17,7 +17,7 @@
 	
 	        <!-- I. MODALIDAD -->
 	        <div class="panel mb-3 h-auto">
-	          <div class="panel-titulo"><h2><i class="bi bi-ui-radios"></i>I. Modalidad del trámite</h2></div>
+	          <div class="panel-titulo"><h2><i class="bi bi-ui-radios"></i>I. Modalidad del trámite que solicita</h2></div>
 	          <div class="row g-3">
 	            <div class="col-md-4">
 	              <label class="form-check"><input class="form-check-input" type="radio" th:field="*{modalidad}" value="INDETERMINADA"><span class="form-check-label">Licencia indeterminada</span></label>
@@ -34,10 +34,18 @@
 	        <div class="panel mb-3 h-auto">
 	          <div class="panel-titulo"><h2><i class="bi bi-person-vcard"></i>II. Datos del solicitante</h2></div>
 	          <div class="row g-3">
-	            <div class="col-md-6">
+	            <div class="col-md-12">
 	              <label class="form-label">Apellidos y nombres</label>
 	              <input class="form-control" disabled th:value="${session.usuario.apellidos + ', ' + session.usuario.nombres}">
 	            </div>
+	            <div class="col-md-3">
+              		<label class="form-label">N° DNI</label>
+              		<input class="form-control" disabled th:value="${perfil.dni}">
+            	</div>
+            	<div class="col-md-3">
+              		<label class="form-label">N° teléfono</label>
+              		<input class="form-control" disabled th:value="${perfil.telefono}">
+           		</div>
 	            <div class="col-md-6">
 	              <label class="form-label">Correo electrónico</label>
 	              <input class="form-control" disabled th:value="${session.usuario.correo}">
@@ -66,7 +74,7 @@
 	          <label class="form-check mb-3"><input class="form-check-input" type="checkbox" th:field="*{conRepresentante}"><span class="form-check-label">Actúo mediante representante</span></label>
 	          <div class="row g-3">
 	            <div class="col-md-3">
-	              <label class="form-label">DNI</label>
+	              <label class="form-label">N° DNI</label>
 	              <input class="form-control" maxlength="8" th:field="*{repDni}">
 	            </div>
 	            <div class="col-md-4">
@@ -103,7 +111,7 @@
 	              <input class="form-control" maxlength="255" th:field="*{actividad}" placeholder="Ej.: Venta de abarrotes">
 	            </div>
 	            <div class="col-md-6">
-	              <label class="form-label">Autorización sectorial (si corresponde)</label>
+	              <label class="form-label">N° de autorización sectorial (si corresponde)</label>
 	              <input class="form-control" maxlength="30" th:field="*{autorizacionSectorial}" placeholder="Déjalo vacío si no aplica">
 	              <div class="form-text">Solo si tu giro necesita un permiso de otra entidad. Una bodega normal no lo necesita.</div>
 	            </div>
@@ -159,9 +167,11 @@
 	          </div>
 	        </div>
 	
-	        <!-- V. DECLARACIÓN JURADA DE CONDICIONES DE SEGURIDAD -->
+	        <!-- V. DECLARACIÓN JURADA DE OBSERVANCIA DE CONDICIONES DE SEGURIDAD -->
 	        <div class="panel mb-3 h-auto">
-	          <div class="panel-titulo"><h2><i class="bi bi-shield-check"></i>V. Declaración jurada de observancia de condiciones de seguridad</h2></div>
+	          <div class="panel-titulo"><h2><i class="bi bi-shield-check"></i>V. Declaración jurada de observancia de condiciones de seguridad <small class="text-muted ms-2">(Ley N° 28976)</small></h2></div>
+	
+	          <h6 class="mb-2">Datos complementarios del local</h6>
 	          <div class="row g-3 mb-3">
 	            <div class="col-md-4">
 	              <label class="form-label">Aforo (personas)</label>
@@ -176,6 +186,9 @@
 	              <input type="number" step="0.01" class="form-control" th:field="*{areaTechadaM2}">
 	            </div>
 	          </div>
+	
+	          <p class="mb-2">El propietario y/o conductor del local declara bajo juramento lo siguiente:
+	            <span class="text-muted small">(marque si cumple; déjelo sin marcar si no corresponde)</span></p>
 	
 	          <div th:each="c, st : ${condiciones}">
 				<h6 class="mt-3 mb-2" th:if="${st.first or c.grupo != condiciones[st.index - 1].grupo}" th:text="${c.grupo}">Grupo</h6>

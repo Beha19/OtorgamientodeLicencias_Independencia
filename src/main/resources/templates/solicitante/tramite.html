@@ -34,7 +34,7 @@
 	      </div>
 	
 	      <!-- P1: PAGAR -->
-	      <div class="panel mb-3" th:if="${exp.estado == 'BORRADOR'}">
+	      <div class="panel mb-3 h-auto" th:if="${exp.estado == 'BORRADOR'}">
 	        <div class="panel-titulo"><h2><i class="bi bi-credit-card"></i>Paga el derecho de trámite</h2></div>
 	        <form th:action="@{/solicitante/tramite/{id}/pagar(id=${exp.idExpediente})}" method="post" class="row g-3 align-items-end">
 	          <div class="col-md-4">
@@ -50,7 +50,7 @@
 	      </div>
 	
 	      <!-- P2: ENVIAR -->
-	      <div class="panel mb-3" th:if="${exp.estado == 'PAGADO_SIN_ENVIO'}">
+	      <div class="panel mb-3 h-auto" th:if="${exp.estado == 'PAGADO_SIN_ENVIO'}">
 	        <div class="panel-titulo"><h2><i class="bi bi-send"></i>Envía tu trámite</h2></div>
 	        <p class="small" th:each="p : ${pagos}" th:text="'Recibo ' + ${p.numeroRecibo} + ' · S/ ' + ${p.monto}"></p>
 	        <form th:action="@{/solicitante/tramite/{id}/enviar(id=${exp.idExpediente})}" method="post">
@@ -59,9 +59,48 @@
 	      </div>
 	
 	      <!-- ENVIADO -->
-	      <div class="panel mb-3" th:if="${exp.estado == 'PENDIENTE_REVISION'}">
+	      <div class="panel mb-3 h-auto" th:if="${exp.estado == 'PENDIENTE_REVISION'}">
 	        <p class="mb-0">Tu trámite está en <strong>revisión</strong>. Se resolverá a más tardar el
 	          <strong th:text="${#temporals.format(exp.fechaLimite, 'dd/MM/yyyy')}"></strong>.</p>
+	      </div>
+	
+	      <!-- DOCUMENTOS ADJUNTOS -->
+	      <div class="panel mb-3 h-auto">
+	        <div class="panel-titulo"><h2><i class="bi bi-paperclip"></i>Documentos adjuntos</h2></div>
+	
+	        <p class="small text-muted" th:if="${documentos.isEmpty()}">
+	          Aún no adjuntaste documentos. Debes subir la copia de tu DNI antes de enviar el trámite.
+	        </p>
+	
+	        <div class="fila" th:each="d : ${documentos}">
+	          <div class="ico"><i class="bi bi-file-earmark-text"></i></div>
+	          <div class="txt">
+	            <strong th:text="${d.tipo}">TIPO</strong>
+	            <small th:text="${d.nombreArchivo}">archivo.pdf</small>
+	          </div>
+	          <a th:href="@{/solicitante/tramite/{id}/documentos/{doc}(id=${exp.idExpediente},doc=${d.idDocumento})}"
+	             target="_blank" class="small">Ver</a>
+	        </div>
+	
+	        <form th:if="${exp.estado == 'BORRADOR' or exp.estado == 'PAGADO_SIN_ENVIO'}"
+	              th:action="@{/solicitante/tramite/{id}/documentos(id=${exp.idExpediente})}"
+	              method="post" enctype="multipart/form-data" class="row g-3 align-items-end mt-1">
+	          <div class="col-md-4">
+	            <label class="form-label">Tipo de documento</label>
+	            <select name="tipo" class="form-select">
+	              <option value="COPIA_DNI_CE">Copia de DNI o carné de extranjería</option>
+	              <option value="CARTA_PODER_LEGALIZADA">Carta poder legalizada (persona natural con representante)</option>
+	              <option value="VIGENCIA_PODER">Vigencia de poder (persona jurídica)</option>
+	            </select>
+	          </div>
+	          <div class="col-md-5">
+	            <label class="form-label">Archivo (PDF, JPG o PNG, máx. 5 MB)</label>
+	            <input type="file" name="archivo" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+	          </div>
+	          <div class="col-md-3">
+	            <button type="submit" class="btn btn-muni"><i class="bi bi-upload me-1"></i> Adjuntar</button>
+	          </div>
+	        </form>
 	      </div>
 	
 	      <a class="btn btn-outline-secondary mb-4" th:href="@{/solicitante/inicio}">Volver al inicio</a>

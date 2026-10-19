@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ import pe.edu.cibertec.licencias.repository.*;
 @Service
 @RequiredArgsConstructor
 public class ExpedienteService
-{	
+{
     private static final List<String> ESTADOS_ACTIVOS = List.of(   // ESTADO EN BASE DE DATOS = REGLA "SOLO 1 EXPEDIENTE ACTIVO POR LOCAL"
             "BORRADOR", "PAGADO_SIN_ENVIO", "PENDIENTE_REVISION",
             "VERIFICADO", "OBSERVADO", "EN_EVALUACION");
@@ -26,6 +26,7 @@ public class ExpedienteService
     private static final int PLAZO_DIAS_HABILES = 15;
     private static final BigDecimal DERECHO_TRAMITE = new BigDecimal("120.50");
     private static final List<String> MEDIOS_PAGO = List.of("TARJETA", "BILLETERA", "CAJA");
+
     private final IUsuario usuarios;
     private final IGiro giros;
     private final IZona zonas;
@@ -38,7 +39,7 @@ public class ExpedienteService
     private final IPago pagos;
     private final CalendarioService calendario;
     private final IDocumentoAdjunto documentos;
-    
+
     @Transactional
     public Expediente guardarBorrador(SolicitudForm f, Integer idSolicitante)
     {
@@ -53,7 +54,7 @@ public class ExpedienteService
         Zona zona = zonas.buscarPorPunto(f.getLatitud(), f.getLongitud())
                 .orElseThrow(() -> new ReglaNegocioException(
                         "El punto marcado no está dentro de ninguna zona registrada del distrito"));
-        
+
         // USO DE SUELO: EL GIRO DEBE ESTAR PERMITIDO EN LA ZONA DEL PIN (TABLA giro_zona)
         if (zonas.contarCompatibilidad(giro.getIdGiro(), zona.getIdZona()) == 0)
         {
@@ -61,7 +62,7 @@ public class ExpedienteService
                     + "\" no está permitido en la zona \"" + zona.getNombre()
                     + "\". Elige otro giro o ubica el pin en una zona compatible.");
         }
-        
+
         validarPersonaYRepresentante(f);
         validarVigencia(f);
 
@@ -149,7 +150,7 @@ public class ExpedienteService
         return e;
     }
 
-    // PAGO SIMULANDO DERECHO DE TRÁMITE: BORRADOR -> PAGADO_SIN_ENVIO 
+    // PAGO SIMULANDO DERECHO DE TRÁMITE: BORRADOR -> PAGADO_SIN_ENVIO
     @Transactional
     public Pago pagar(Integer idExpediente, Integer idSolicitante, String medio)
     {
@@ -180,8 +181,7 @@ public class ExpedienteService
         return p;
     }
 
-    
-    // ENVÍO: ASIGNA NÚMERO Y PLAZO. PAGADO_SIN_ENVIO -> PENDIENTE_REVISION 
+    // ENVÍO: ASIGNA NÚMERO Y PLAZO. PAGADO_SIN_ENVIO -> PENDIENTE_REVISION
     @Transactional
     public Expediente enviar(Integer idExpediente, Integer idSolicitante)
     {
@@ -191,11 +191,35 @@ public class ExpedienteService
             throw new ReglaNegocioException("Primero debes pagar el derecho de trámite");
         }
 
-        boolean tieneDni = documentos.findByExpediente_IdExpediente(idExpediente)
-                .stream().anyMatch(d -> "DNI".equals(d.getTipo()));
+        // DOCUMENTOS: EL SISTEMA SOLO COMPRUEBA QUE EXISTAN; EL REVISOR VERIFICA QUE SEAN LEGALES Y CORRECTOS
+        List<DocumentoAdjunto> adjuntos = documentos.findByExpediente_IdExpediente(idExpediente);
+
+        boolean tieneDni = adjuntos.stream().anyMatch(d -> "COPIA_DNI_CE".equals(d.getTipo()));
         if (!tieneDni)
         {
             throw new ReglaNegocioException("Debes adjuntar la copia de tu DNI antes de enviar el trámite");
+        }
+
+        // SI ACTÚA POR REPRESENTANTE, TAMBIÉN DEBE ADJUNTAR EL PODER QUE LE CORRESPONDE
+        Optional<Representante> representante = representantes.findByExpediente_IdExpediente(idExpediente);
+        if (representante.isPresent())
+        {
+            String poder = representante.get().getTipoPoder();
+            boolean tienePoder = adjuntos.stream().anyMatch(d -> poder.equals(d.getTipo()));
+            if (!tienePoder)
+            {
+                String nombre = "CARTA_PODER_LEGALIZADA".equals(poder)
+                        ? "la carta poder legalizada" : "la vigencia de poder";
+                throw new ReglaNegocioException("Como actúas mediante representante, debes adjuntar " + nombre);
+            }
+        }
+
+        boolean djAceptada = declaraciones.findByExpediente_IdExpediente(idExpediente)
+                .map(d -> Boolean.TRUE.equals(d.getAceptaDj()))
+                .orElse(false);
+        if (!djAceptada)
+        {
+            throw new ReglaNegocioException("Debes aceptar la declaración jurada para enviar");
         }
 
         LocalDateTime ahora = LocalDateTime.now();
@@ -206,6 +230,7 @@ public class ExpedienteService
         return expedientes.save(e);
     }
 
+    // PÚBLICO: TAMBIÉN LO USA DocumentoService PARA VERIFICAR QUE EL EXPEDIENTE ES DEL SOLICITANTE
     public Expediente cargarPropio(Integer idExpediente, Integer idSolicitante)
     {
         Expediente e = expedientes.findById(idExpediente)
@@ -224,7 +249,7 @@ public class ExpedienteService
                 .orElse(1);
         return String.format("%d-%06d", anio, siguiente);
     }
-    
+
     private void validarPersonaYRepresentante(SolicitudForm f)
     {
         if ("JURIDICA".equals(f.getTipoPersona()))
