@@ -8,7 +8,7 @@
 	</head>
 
 	<body class="bg-light">
-		
+
 		<div class="container py-4">
 			<h1 class="h3">Sistema de Licencias de Funcionamiento</h1>
 			<p class="text-muted">Municipalidad de Independencia</p>
@@ -28,9 +28,10 @@
 							<div class="input-group">
 								<input type="text" class="form-control" th:field="*{dni}" maxlength="8"
 									placeholder="8 dígitos" th:classappend="${#fields.hasErrors('dni')} ? 'is-invalid'">
-								<button type="button" class="btn btn-outline-secondary">Buscar</button>
+								<button type="button" class="btn btn-outline-secondary" id="btnBuscar">Buscar</button>
 							</div>
 							<div class="text-danger small" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
+							<div class="small mt-1" id="mensajeReniec"></div>
 						</div>
 
 						<div class="row">
@@ -76,5 +77,58 @@
 				</div>
 			</div>
 		</main>
+
+		<script>
+			const btnBuscar = document.getElementById('btnBuscar');
+			const campoDni = document.getElementById('dni');
+			const campoNombres = document.getElementById('nombres');
+			const campoApellidos = document.getElementById('apellidos');
+			const mensaje = document.getElementById('mensajeReniec');
+
+			function avisar(texto, clase)
+			{
+				mensaje.textContent = texto;
+				mensaje.className = 'small mt-1 ' + clase;
+			}
+
+			btnBuscar.addEventListener('click', async function ()
+			{
+				const dni = campoDni.value.trim();
+
+				if (!/^\d{8}$/.test(dni))
+				{
+					avisar('Ingrese un DNI de 8 dígitos.', 'text-danger');
+					return;
+				}
+
+				avisar('Buscando...', 'text-muted');
+
+				try
+				{
+					const respuesta = await fetch('/api/reniec/' + dni);
+
+					if (respuesta.status === 404)
+					{
+						avisar('DNI no encontrado en RENIEC. Ingrese los datos manualmente.', 'text-warning');
+						return;
+					}
+
+					if (!respuesta.ok)
+					{
+						avisar('No se pudo consultar. Intente de nuevo.', 'text-danger');
+						return;
+					}
+
+					const persona = await respuesta.json();
+					campoNombres.value = persona.nombres;
+					campoApellidos.value = persona.apellidos;
+					avisar('Datos encontrados.', 'text-success');
+				}
+				catch (e)
+				{
+					avisar('No se pudo consultar. Intente de nuevo.', 'text-danger');
+				}
+			});
+		</script>
 	</body>
 </html>
