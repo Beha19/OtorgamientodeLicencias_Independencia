@@ -11,7 +11,7 @@
 	
 	    <main class="flex-grow-1">
 	      <!-- DATOS DE EJEMPLO: se reemplazarán con consultas a la base cuando exista CU01 -->
-	      <div class="row g-3 mb-3"> <!-- Mis Tarjetas dinámicas -->
+	      <div class="row g-3 mb-3"> <!-- CARD DINÁMICAS -->
 	        <div th:replace="~{fragments/componentes :: kpi('k-amarillo','bi-envelope','bi-envelope',2,'Mensajes en la casilla')}"></div>
 				<div th:replace="~{fragments/componentes :: kpi('k-azul','bi-folder2-open','bi-hourglass-split',2,'En proceso')}"></div>
 				<div th:replace="~{fragments/componentes :: kpi('k-rojo','bi-exclamation-triangle','bi-exclamation-triangle',1,'Observados')}"></div>
@@ -39,7 +39,7 @@
 	          <div class="panel">
 	            <div class="panel-titulo"><h2><i class="bi bi-plus-circle"></i>¿Tienes un negocio?</h2></div>
 	            <p class="small text-muted mb-3">Solicita tu licencia de funcionamiento para locales de hasta 100 m².</p>
-	            <a class="btn btn-muni w-100 mb-3" href="#"><i class="bi bi-file-earmark-plus me-1"></i> Nuevo trámite</a>
+	            <a class="btn btn-muni w-100 mb-3" th:href="@{/solicitante/tramite/nuevo}"><i class="bi bi-file-earmark-plus me-1"></i> Nuevo trámite</a>
 	            <div class="small atencion">
 				  <div><i class="bi bi-headset me-1 text-primary"></i><strong>Atención al ciudadano</strong></div>
 				  <div><i class="bi bi-telephone me-1"></i>(01) 712-4100</div>
