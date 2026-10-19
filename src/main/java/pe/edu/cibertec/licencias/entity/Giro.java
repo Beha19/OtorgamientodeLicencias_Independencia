@@ -1,30 +1,37 @@
 package pe.edu.cibertec.licencias.entity;
 
-import jakarta.persistence.Column;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+
 @Entity
-@Data
 @Table(name = "giro")
+@Data
 public class Giro
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_giro")
-	private Integer codigo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idGiro;
 
-	@Column(name = "codigo_ciiu")
-	private String codigoCiiu;
+    private String codigoCiiu;
+    private String nombre;
+    private String nivelRiesgo;               
+    private Boolean activo = true;
 
-	private String nombre;
 
-	@Column(name = "nivel_riesgo")
-	private String nivelRiesgo;
-
-	private Boolean activo;
+    @ManyToMany
+    @JoinTable(name = "giro_zona",
+               joinColumns = @JoinColumn(name = "id_giro"),
+               inverseJoinColumns = @JoinColumn(name = "id_zona"))
+    private Set<Zona> zonasPermitidas = new HashSet<>();
 }

@@ -1,0 +1,330 @@
+/* =====================================================================
+   CSS - LicenControl de la Municipalidad Distrital de Independencia
+   ===================================================================== */
+
+/* ================= PALETA DE LA MUNICIPALIDAD ================= */
+:root {
+  --muni-azul-noche: #0A2559;
+  --muni-azul-oscuro: #00367A;
+  --muni-azul: #015BC1;
+  --muni-celeste: #3CA6F2;
+  --muni-amarillo: #F1BA2B;
+  --muni-verde: #209C54;
+  --muni-rojo: #DA3431;
+  --muni-vino: #7A1F3D;
+
+  --fondo: #F2F5FA;
+  --texto: #10234A;
+  --gris: #6B7280;
+  --borde: #D9DCE5;
+}
+
+/* ================= BASE ================= */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Poppins', sans-serif; color: var(--texto); }
+a { text-decoration: none; }
+
+/* El login usa fondo blanco; el sistema interno (después) usará gris claro. */
+body.login-body { background: #fff; min-height: 100vh; }
+
+/* =====================================================================
+   1. LOGIN
+   ===================================================================== */
+.login-page { min-height: 100vh; }
+
+/* ---------- Mitad izquierda: marca ---------- */
+.panel-marca {
+  position: relative; overflow: hidden; color: #fff;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(60,166,242,.35) 0%, transparent 45%),
+    linear-gradient(155deg, var(--muni-azul-noche) 0%, var(--muni-azul-oscuro) 50%, var(--muni-azul) 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 48px 40px; text-align: center;
+}
+.panel-marca::before {                 /* puntitos decorativos */
+  content: ""; position: absolute; top: 40px; right: 40px; width: 140px; height: 140px;
+  background-image: radial-gradient(rgba(255,255,255,.25) 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+.panel-marca::after {                  /* círculo decorativo */
+  content: ""; position: absolute; bottom: -120px; left: -120px; width: 320px; height: 320px;
+  border: 1px solid rgba(255,255,255,.15); border-radius: 50%;
+}
+.franja {                              /* franja con los colores del logo */
+  position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
+  background: linear-gradient(90deg,
+    var(--muni-amarillo) 0 33.3%, var(--muni-verde) 33.3% 66.6%, var(--muni-rojo) 66.6% 100%);
+}
+.login-logo {
+  width: 130px; height: 130px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+}
+.login-logo i   { font-size: 3rem; color: var(--muni-amarillo); }
+.login-logo img { width: 100%; height: 100%; object-fit: contain; }
+.marca-nombre { font-weight: 700; font-style: italic; font-size: 2.1rem; color: var(--muni-amarillo); margin: 0; }
+.marca-sub { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; font-weight: 700; opacity: .9; margin-top: 6px; }
+.separador { display: flex; align-items: center; gap: 12px; width: 220px; margin: 56px auto 32px; color: var(--muni-amarillo); }
+.separador::before, .separador::after { content: ""; flex: 1; height: 1px; background: rgba(241,186,43,.6); }
+.lema { font-family: 'Caveat', cursive; font-size: 1.6rem; line-height: 1.3; max-width: 360px; }
+.valores { display: flex; gap: 40px; justify-content: center; margin-top: 64px; position: relative; z-index: 1; }
+.valores div { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.valores i { display: block; font-size: 1.5rem; color: var(--muni-amarillo); margin-bottom: 6px; }
+
+/* ---------- Mitad derecha: formulario ---------- */
+.panel-form { display: flex; align-items: center; justify-content: center; padding: 48px 24px; background: #fff; }
+.form-caja { width: 100%; max-width: 400px; }
+.login-titulo { font-weight: 700; font-size: 2rem; color: var(--muni-azul-oscuro); margin-bottom: 4px; }
+.login-titulo span { color: var(--muni-azul); }
+.login-subtitulo { color: var(--gris); margin-bottom: 32px; }
+.form-caja .form-label { font-weight: 700; font-size: .9rem; }
+.campo { position: relative; }
+.campo > i.icono { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muni-azul-oscuro); }
+.campo .form-control { height: 52px; border-radius: 26px; border: 1.5px solid var(--borde); padding-left: 48px; padding-right: 48px; }
+.campo .form-control:focus { border-color: var(--muni-azul); box-shadow: 0 0 0 .2rem rgba(1,91,193,.15); }
+.ver-clave { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); border: 0; background: none; color: var(--gris); }
+.olvido { color: var(--muni-azul); font-weight: 700; font-size: .85rem; }
+.btn-ingresar {
+  height: 52px; border: 0; border-radius: 26px; color: #fff; font-weight: 700; transition: filter .2s;
+  background: linear-gradient(90deg, var(--muni-azul-noche) 0%, var(--muni-azul) 100%);
+}
+.btn-ingresar:hover { filter: brightness(1.15); color: #fff; }
+.login-registro { text-align: center; margin-top: 24px; color: var(--gris); }
+.login-registro a { color: var(--muni-azul); font-weight: 700; }
+.login-pie { text-align: center; color: var(--gris); font-size: .8rem; margin-top: 40px; }
+
+
+
+/* El sistema interno usa fondo gris claro (el login usa blanco). */
+body.app-body { background: var(--fondo); font-size: .9rem; }
+
+/* =====================================================================
+   2. SIDEBAR (fragmento común)
+   ===================================================================== */
+.sidebar {
+  width: 250px; flex-shrink: 0; position: sticky; top: 0; height: 100vh;
+  color: #fff; display: flex; flex-direction: column; overflow-y: auto;
+  background: linear-gradient(180deg, var(--muni-azul) 0%, var(--muni-azul-oscuro) 40%, var(--muni-azul-noche) 72%, #040F26 100%);
+  box-shadow: 4px 0 18px rgba(10,37,89,.25);
+}
+.marca { display: flex; gap: 10px; align-items: center; padding: 20px 16px 22px; }
+.marca .logo { width: 58px; height: 58px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+               background: rgba(255,255,255,.12); border-radius: 12px; }
+.marca .logo i   { font-size: 1.8rem; color: var(--muni-amarillo); }
+.marca .logo img { width: 100%; height: 100%; object-fit: contain; }
+.marca em     { display: block; color: var(--muni-amarillo); font-weight: 600; font-size: .95rem; letter-spacing: .04em; }
+.marca small  { display: block; font-size: .65rem; opacity: .9; }
+.marca strong { display: block; font-size: .9rem; letter-spacing: .04em; }
+.menu-titulo { font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; opacity: .55; padding: 14px 24px 4px; }
+.sidebar .nav-link { color: #fff; border-radius: 30px; padding: 9px 14px; margin: 2px 12px;
+                     display: flex; align-items: center; gap: 12px; font-weight: 500; }
+.sidebar .nav-link i { font-size: 1.1rem; }
+.sidebar .nav-link:hover { background: rgba(255,255,255,.10); }
+.sidebar .nav-link.active {
+  background: linear-gradient(90deg, rgba(255,255,255,.26) 0%, rgba(255,255,255,.10) 100%);
+  border: 1px solid rgba(255,255,255,.25);
+  box-shadow: 0 6px 16px rgba(6,26,64,.35), inset 0 1px 0 rgba(255,255,255,.25);
+  font-weight: 600;
+}
+.sidebar .pie { margin-top: auto; padding: 0 16px 14px; text-align: center; }
+.sidebar .dibujo { width: 100%; opacity: .55; display: block; margin-bottom: -6px; }
+.sidebar .subgerencia { color: var(--muni-amarillo); font-weight: 600; font-style: italic; font-size: .82rem; line-height: 1.35; margin: 10px 0 12px; }
+.franja-muni { height: 4px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--muni-amarillo) 0 33.3%, var(--muni-rojo) 33.3% 66.6%, var(--muni-verde) 66.6% 100%); }
+.sidebar .franja-muni { margin: 10px 18px 0; }
+
+/* =====================================================================
+   3. CABECERA (fragmento común)
+   ===================================================================== */
+.encabezado { background: #fff; padding: 12px 26px; display: flex; justify-content: space-between; align-items: center;
+              box-shadow: 0 1px 0 rgba(10,37,89,.06); position: sticky; top: 0; z-index: 10; }
+.saludo { display: flex; gap: 14px; align-items: center; }
+.saludo .clima { font-size: 1.9rem; color: var(--muni-celeste); }
+.saludo h1 { font-size: 1.2rem; font-weight: 700; margin: 0; color: var(--muni-azul-oscuro); }
+.saludo p  { margin: 0; font-size: .78rem; color: var(--gris); font-style: italic; }
+.herramientas { display: flex; align-items: center; gap: 18px; font-size: .8rem; color: var(--gris); }
+.herramientas .sep { width: 1px; height: 26px; background: #E3E7EF; }
+.campana { position: relative; font-size: 1.2rem; color: var(--muni-azul-oscuro); }
+.campana span { position: absolute; top: -4px; right: -7px; background: var(--muni-rojo); color: #fff;
+                font-size: .6rem; border-radius: 10px; padding: 1px 5px; font-style: normal; }
+.usuario { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+          color: #fff; font-weight: 700; font-size: .9rem; line-height: 1; }
+.usuario strong { display: block; color: var(--muni-azul-oscuro); font-size: .85rem; }
+.usuario small  { font-size: .7rem; }
+
+/* Color del avatar según el rol */
+.av-SOLICITANTE { background: var(--muni-celeste);  color: var(--muni-azul-noche); }
+.av-REVISOR     { background: var(--muni-amarillo); color: var(--muni-azul-noche); }
+.av-TECNICO     { background: var(--muni-verde); }
+.av-SUBGERENTE  { background: var(--muni-vino); }
+.av-ADMIN       { background: var(--muni-azul-noche); }
+
+/* =====================================================================
+   4. DASHBOARD (tarjetas, paneles, filas, chips)
+   ===================================================================== */
+main { padding: 22px 26px; }
+.kpi { border-radius: 16px; padding: 18px; color: #fff; height: 100%; position: relative; overflow: hidden; }
+.kpi::after { content: ""; position: absolute; right: -50px; top: -60px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,.10); }
+.kpi > * { position: relative; z-index: 1; }
+.kpi .fondo { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); z-index: 0; font-size: 5.2rem; color: rgba(255,255,255,.22); line-height: 1; }
+.kpi .icono { width: 44px; height: 44px; border-radius: 50%; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,.15);
+              display: flex; align-items: center; justify-content: center; font-size: 1.1rem; margin-bottom: 10px; }
+.kpi .numero   { font-size: 1.9rem; font-weight: 700; line-height: 1; }
+.kpi .etiqueta { font-size: .85rem; opacity: .95; }
+.kpi a { color: #fff; font-size: .75rem; font-weight: 600; display: inline-block; margin-top: 10px; }
+.k-azul .icono { color: var(--muni-azul); } .k-verde .icono { color: var(--muni-verde); }
+.k-amarillo .icono { color: #D99A0E; } .k-rojo .icono { color: var(--muni-rojo); } .k-celeste .icono { color: var(--muni-celeste); }
+.k-azul     { background: linear-gradient(135deg, var(--muni-celeste) 0%, var(--muni-azul) 55%, var(--muni-azul-oscuro) 100%); }
+.k-celeste  { background: linear-gradient(135deg, var(--muni-celeste) 0%, var(--muni-azul) 100%); }
+.k-verde    { background: linear-gradient(135deg, #5CCB8A 0%, var(--muni-verde) 60%, #157A40 100%); }
+.k-amarillo { background: linear-gradient(135deg, #F9D774 0%, var(--muni-amarillo) 55%, #D99A0E 100%); }
+.k-rojo     { background: linear-gradient(135deg, #F07B78 0%, var(--muni-rojo) 55%, #A81E1C 100%); }
+
+.panel { background: #fff; border-radius: 16px; padding: 18px 20px; height: 100%; box-shadow: 0 2px 10px rgba(10,37,89,.05); }
+.panel-titulo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.panel-titulo h2 { font-size: .95rem; font-weight: 700; margin: 0; color: var(--muni-azul-oscuro); display: flex; gap: 8px; align-items: center; }
+.panel-titulo h2 i { color: var(--muni-azul); }
+.panel-titulo a { font-size: .75rem; color: var(--muni-azul); font-weight: 600; font-style: italic; }
+.fila { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #EEF1F6; }
+.fila:last-child { border-bottom: 0; }
+.fila .ico { width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #EAF2FD; color: var(--muni-azul); }
+.fila .txt { flex: 1; min-width: 0; }
+.fila .txt strong { display: block; font-size: .82rem; font-weight: 600; }
+.fila .txt small  { color: var(--gris); font-size: .72rem; }
+.chip { font-size: .66rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.c-verde { background: #E3F5EA; color: var(--muni-verde); } .c-amarillo { background: #FDF3D9; color: #B7840A; }
+.c-rojo  { background: #FBE6E6; color: var(--muni-rojo); }  .c-azul { background: #E3EEFB; color: var(--muni-azul); }
+.c-gris  { background: #EEF0F4; color: var(--gris); }
+.c-vino   { background: #F3E3E9; color: var(--muni-vino); }
+.c-celeste { background: #E1F1FD; color: #1B7CC4; }
+.semaforo { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+.s-verde { background: var(--muni-verde); } .s-amarillo { background: var(--muni-amarillo); } .s-rojo { background: var(--muni-rojo); }
+.fecha-box { width: 42px; text-align: center; line-height: 1.05; flex-shrink: 0; }
+.fecha-box strong { font-size: 1.15rem; color: var(--muni-azul-oscuro); display: block; }
+.fecha-box small  { font-size: .62rem; text-transform: uppercase; color: var(--gris); }
+.leyenda { display: flex; justify-content: space-between; font-size: .8rem; padding: 4px 0; }
+.btn-muni { background: var(--muni-azul); color: #fff; border-radius: 10px; font-weight: 600; font-size: .85rem; }
+.btn-muni:hover { background: var(--muni-azul-oscuro); color: #fff; }
+.grafico { height: 210px; }
+
+/* Línea de tiempo del trámite (solicitante) */
+.pasos { display: flex; justify-content: space-between; position: relative; margin: 10px 0 4px; }
+.pasos::before { content: ""; position: absolute; top: 17px; left: 6%; right: 6%; height: 3px; background: #E3E7EF; }
+.pasos .avance { position: absolute; top: 17px; left: 6%; height: 3px; background: var(--muni-azul); }
+.paso { text-align: center; position: relative; z-index: 1; width: 20%; font-size: .72rem; color: var(--gris); }
+.paso .bola { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; background: #E3E7EF; color: var(--gris); }
+.paso.hecho .bola  { background: var(--muni-azul); color: #fff; }
+.paso.actual .bola { background: var(--muni-amarillo); color: #fff; box-shadow: 0 0 0 5px rgba(241,186,43,.25); }
+.paso.hecho, .paso.actual { color: var(--texto); font-weight: 600; }
+
+.accesos a { display: flex; align-items: center; gap: 8px; color: var(--texto); font-size: .8rem; padding: 8px 12px; border-radius: 10px; background: #F4F7FC; }
+.accesos a i { color: var(--muni-azul); }
+.pie-pagina { display: flex; justify-content: space-between; color: var(--gris); font-size: .72rem; padding: 6px 26px 18px; }
+.chat { position: fixed; right: 24px; bottom: 64px; width: 54px; height: 54px; border-radius: 50%; border: 0;
+        background: var(--muni-verde); color: #fff; font-size: 1.5rem; box-shadow: 0 6px 16px rgba(32,156,84,.4); }
+        
+.atencion div { margin-bottom: 6px; }
+
+
+/* =====================================================================
+   5. CHAT DE AYUDA (ventana flotante)
+   ===================================================================== */
+.chat-ventana { position: fixed; right: 24px; bottom: 130px; width: 330px; max-width: calc(100vw - 32px);
+                background: #fff; border-radius: 16px; box-shadow: 0 10px 30px rgba(10,37,89,.25);
+                display: none; flex-direction: column; overflow: hidden; z-index: 1040; }
+.chat-ventana.abierta { display: flex; }
+.chat-cab { background: linear-gradient(90deg, var(--muni-azul-noche), var(--muni-azul)); color: #fff;
+            padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
+            font-weight: 600; font-size: .85rem; }
+.chat-cab button { background: none; border: 0; color: #fff; }
+.chat-msgs { height: 280px; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; background: var(--fondo); }
+.chat-msgs div { max-width: 85%; padding: 8px 12px; border-radius: 14px; font-size: .8rem; line-height: 1.35; }
+.chat-msgs .m-bot { background: #fff; color: var(--texto); align-self: flex-start; border-bottom-left-radius: 4px; }
+.chat-msgs .m-yo  { background: var(--muni-azul); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-sug { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px 0; }
+.chat-sug button { border: 1px solid var(--muni-azul); background: #fff; color: var(--muni-azul);
+                   border-radius: 20px; font-size: .7rem; padding: 3px 10px; }
+.chat-sug button:hover { background: var(--muni-azul); color: #fff; }
+.chat-form { display: flex; gap: 8px; padding: 10px 12px; }
+.chat-form input { flex: 1; border: 1.5px solid var(--borde); border-radius: 20px; padding: 6px 14px; font-size: .8rem; outline: none; }
+.chat-form input:focus { border-color: var(--muni-azul); }
+.chat-form button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--muni-verde); color: #fff; }
+
+
+
+/* =====================================================================
+   6. MODO OSCURO (se activa con data-bs-theme="dark" en <html>)
+   ===================================================================== */
+[data-bs-theme="dark"] {
+  --fondo: #0B1220;
+  --superficie: #131D31;
+  --texto: #E6ECF8;
+  --gris: #A3AEC4;
+  --borde: #2A3752;
+  --titulo: #9CC9FF;
+}
+
+/* Fondos */
+[data-bs-theme="dark"] body.login-body { background: var(--fondo); }
+[data-bs-theme="dark"] .panel-form { background: var(--fondo); }
+[data-bs-theme="dark"] .encabezado { background: var(--superficie); box-shadow: 0 1px 0 var(--borde); }
+[data-bs-theme="dark"] .panel { background: var(--superficie); box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+
+/* Títulos y enlaces: el azul oscuro no se lee sobre fondo oscuro */
+[data-bs-theme="dark"] .saludo h1,
+[data-bs-theme="dark"] .panel-titulo h2,
+[data-bs-theme="dark"] .usuario strong,
+[data-bs-theme="dark"] .campana,
+[data-bs-theme="dark"] .fecha-box strong,
+[data-bs-theme="dark"] .login-titulo { color: var(--titulo); }
+[data-bs-theme="dark"] .panel-titulo h2 i,
+[data-bs-theme="dark"] .panel-titulo a,
+[data-bs-theme="dark"] .accesos a i,
+[data-bs-theme="dark"] .login-titulo span,
+[data-bs-theme="dark"] .login-registro a,
+[data-bs-theme="dark"] .olvido,
+[data-bs-theme="dark"] .campo > i.icono { color: var(--muni-celeste); }
+
+/* Líneas y separadores */
+[data-bs-theme="dark"] .herramientas .sep { background: var(--borde); }
+[data-bs-theme="dark"] .fila { border-bottom-color: var(--borde); }
+[data-bs-theme="dark"] .fila .ico { background: #1C2A45; color: var(--muni-celeste); }
+[data-bs-theme="dark"] .accesos a { background: #1A2640; color: var(--texto); }
+[data-bs-theme="dark"] .pasos::before { background: var(--borde); }
+[data-bs-theme="dark"] .paso .bola { background: var(--borde); }
+[data-bs-theme="dark"] .campo .form-control { border-color: var(--borde); }
+
+/* Chips: fondo translúcido y texto claro */
+[data-bs-theme="dark"] .c-verde    { background: rgba(32,156,84,.20);  color: #5CCB8A; }
+[data-bs-theme="dark"] .c-amarillo { background: rgba(241,186,43,.18); color: #F1BA2B; }
+[data-bs-theme="dark"] .c-rojo     { background: rgba(218,52,49,.22);  color: #F07B78; }
+[data-bs-theme="dark"] .c-azul     { background: rgba(60,166,242,.18); color: #7CC0F7; }
+[data-bs-theme="dark"] .c-celeste  { background: rgba(60,166,242,.18); color: #7CC0F7; }
+[data-bs-theme="dark"] .c-vino     { background: rgba(200,80,120,.24); color: #E58BAA; }
+[data-bs-theme="dark"] .c-gris     { background: rgba(255,255,255,.08); color: var(--gris); }
+
+/* Avatar del admin: el azul noche se perdería en el encabezado oscuro */
+[data-bs-theme="dark"] .av-ADMIN { box-shadow: 0 0 0 2px rgba(255,255,255,.35); }
+
+/* Chat */
+[data-bs-theme="dark"] .chat-ventana { background: var(--superficie); }
+[data-bs-theme="dark"] .chat-msgs { background: var(--fondo); }
+[data-bs-theme="dark"] .chat-msgs .m-bot { background: #1C2A45; color: var(--texto); }
+[data-bs-theme="dark"] .chat-sug button { background: transparent; color: var(--muni-celeste); border-color: var(--muni-celeste); }
+[data-bs-theme="dark"] .chat-sug button:hover { background: var(--muni-celeste); color: var(--muni-azul-noche); }
+[data-bs-theme="dark"] .chat-form input { background: var(--fondo); color: var(--texto); border-color: var(--borde); }
+
+/* ---------- Interruptor claro / oscuro ---------- */
+.tema-sw { width: 58px; height: 30px; border: 0; padding: 0; border-radius: 15px; background: #E3E7EF;
+           position: relative; cursor: pointer; transition: background .25s; }
+.tema-sw:focus-visible { outline: 2px solid var(--muni-azul); outline-offset: 2px; }
+.tema-knob { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%;
+             background: var(--muni-amarillo); color: var(--muni-azul-noche);
+             display: flex; align-items: center; justify-content: center; font-size: .8rem;
+             transition: transform .25s, background .25s; }
+.i-luna { display: none; }
+
+[data-bs-theme="dark"] .tema-sw   { background: #2A3752; }
+[data-bs-theme="dark"] .tema-knob { transform: translateX(28px); background: #fff; }
+[data-bs-theme="dark"] .i-sol     { display: none; }
+[data-bs-theme="dark"] .i-luna    { display: inline; }

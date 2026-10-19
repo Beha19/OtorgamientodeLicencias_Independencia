@@ -3,44 +3,69 @@ package pe.edu.cibertec.licencias.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+
 @Entity
-@Data
 @Table(name = "expediente")
+@Data
 public class Expediente
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_expediente")
-	private Integer codigo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idExpediente;
 
-	private String numero;
+    private String numero;                     
 
-	@ManyToOne
-	@JoinColumn(name = "id_administrado")
-	private Usuario administrado;
+    @ManyToOne
+    @JoinColumn(name = "id_solicitante")
+    private Usuario solicitante;
 
-	@ManyToOne
-	@JoinColumn(name = "id_giro")
-	private Giro giro;
+    @ManyToOne
+    @JoinColumn(name = "id_establecimiento")
+    private Establecimiento establecimiento;
 
-	@Column(name = "nombre_comercial")
-	private String nombreComercial;
+    @ManyToOne
+    @JoinColumn(name = "id_giro")
+    private Giro giro;
 
-	private String estado;
+    private String modalidad = "INDETERMINADA";    
+    private LocalDate fechaFinVigencia;            
+    private String tipoPersona = "NATURAL";        
+    private String nombreComercial;
+    private String actividad;
+    private String autorizacionSectorial;
+    private String ruc;                            
+    private String razonSocial;
+    private String estado = "BORRADOR";
+    private LocalDateTime fechaRegistro;
+    private LocalDateTime fechaEnvio;
+    private LocalDate fechaLimite;               
 
-	@Column(name = "fecha_registro")
-	private LocalDateTime fechaRegistro;
+    @ManyToOne
+    @JoinColumn(name = "id_revisor")
+    private Usuario revisor;
 
-	@Column(name = "fecha_limite")
-	private LocalDate fechaLimite;
+    @ManyToOne
+    @JoinColumn(name = "id_tecnico_asignado")
+    private Usuario tecnicoAsignado;
+
+    private LocalDateTime fechaAsignacion;
+
+    @PrePersist
+    public void alRegistrar()
+    {
+        if (fechaRegistro == null)
+        {
+            fechaRegistro = LocalDateTime.now();
+        }
+    }
 }

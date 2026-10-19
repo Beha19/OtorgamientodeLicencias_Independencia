@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión - LicenControl</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body class="login-body">
+	<div class="container-fluid login-page">
+	  <div class="row min-vh-100">
+	
+	    <!-- MITAD IZQUIERDA: se oculta en celular (d-none d-lg-flex) -->
+	    <div class="col-lg-6 d-none d-lg-flex panel-marca">
+	      <div class="login-logo">
+	        <img th:src="@{/img/LogoMuni.png}" alt="Logo Municipalidad de Independencia"
+	             onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'bi bi-bank2'}))">
+	      </div>
+	      <div class="marca-sub">Municipalidad Distrital de</div>
+	      <div class="marca-sub" style="font-size:1.3rem;margin-bottom:6px">Independencia</div>
+	      <h1 class="marca-nombre">LicenControl</h1>
+	
+	      <div class="separador"><i class="bi bi-file-earmark-check"></i></div>
+	
+	      <p class="lema">Subgerencia de Formalización Empresarial, Comercialización y Licencias</p>
+	
+	      <div class="valores">
+	        <div><i class="bi bi-lightning-charge"></i>Rápido</div>
+	        <div><i class="bi bi-shield-check"></i>Seguro</div>
+	        <div><i class="bi bi-eye"></i>Transparente</div>
+	      </div>
+	      <div class="franja"></div>
+	    </div>
+	
+	    <!-- MITAD DERECHA: formulario -->
+	    <div class="col-lg-6 panel-form">
+	      <div class="form-caja">
+	        <!-- Solo en celular: marca pequeña arriba del formulario -->
+	        <div class="d-lg-none text-center mb-4">
+	          <img th:src="@{/img/LogoMuni.png}" alt="Logo" style="height:64px"
+	               onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'bi bi-bank2',style:'font-size:2.5rem;color:var(--muni-azul-oscuro)'}))">
+	          <div class="marca-nombre" style="font-size:1.4rem;color:var(--muni-azul-oscuro)">LicenControl</div>
+	          <small class="text-muted">Municipalidad Distrital de Independencia</small>
+	        </div>
+	
+	        <h2 class="login-titulo">Iniciar <span>sesión</span></h2>
+	        <p class="login-subtitulo">Ingresa tus credenciales para acceder</p>
+	
+	        <!-- Error: lo envía LoginController cuando el correo o la clave no coinciden -->
+	        <div class="alert alert-danger py-2" role="alert" th:if="${error}">
+	          <i class="bi bi-exclamation-triangle-fill me-1"></i><span th:text="${error}">Error</span>
+	        </div>
+	        <!-- Aviso al cerrar sesión: llega como /login?salio -->
+	        <div class="alert alert-success py-2" role="alert" th:if="${param.salio}">
+	          <i class="bi bi-check-circle-fill me-1"></i>Cerraste sesión correctamente.
+	        </div>
+	
+	        <form th:action="@{/login}" method="post">
+	          <div class="mb-3">
+	            <label class="form-label" for="correo">Correo electrónico</label>
+	            <div class="campo">
+	              <i class="bi bi-envelope-fill icono"></i>
+	              <input class="form-control" type="email" id="correo" name="correo"
+	                     th:value="${correo}" placeholder="ejemplo@correo.com" required>
+	            </div>
+	          </div>
+	
+	          <div class="mb-2">
+	            <label class="form-label" for="clave">Contraseña</label>
+	            <div class="campo">
+	              <i class="bi bi-lock-fill icono"></i>
+	              <input class="form-control" type="password" id="clave" name="clave"
+	                     placeholder="Ingresa tu contraseña" required>
+	              <button class="ver-clave" type="button" onclick="verClave()" aria-label="Ver contraseña">
+	                <i class="bi bi-eye" id="ojo"></i>
+	              </button>
+	            </div>
+	          </div>
+	
+	          <div class="text-end mb-4">
+	            <a class="olvido" href="#">¿Olvidaste tu contraseña?</a>
+	          </div>
+	
+	          <button class="btn btn-ingresar w-100" type="submit">
+	            <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
+	          </button>
+	        </form>
+	
+	        <p class="login-registro">¿No tienes cuenta? <a th:href="@{/registro}">Regístrate</a></p>
+	
+	        <p class="login-pie">LicenControl · Municipalidad Distrital de Independencia<br>
+	          © 2026 Subgerencia de Formalización Empresarial, Comercialización y Licencias</p>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
+	
+	
+	<script>
+	  // Muestra u oculta la contraseña al pulsar el ojo
+	  function verClave() {
+	    const campo = document.getElementById('clave');
+	    const ojo = document.getElementById('ojo');
+	    const oculta = campo.type === 'password';
+	    campo.type = oculta ? 'text' : 'password';
+	    ojo.className = oculta ? 'bi bi-eye-slash' : 'bi bi-eye';}
+	</script>
+</body>
+
+</html>
