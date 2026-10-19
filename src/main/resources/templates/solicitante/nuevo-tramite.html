@@ -143,20 +143,19 @@
 	              <input class="form-control" th:field="*{referencia}">
 	            </div>
 	
-	            <!-- PROVISIONAL: MAPA CON MI PIN (SIG) -->
-	            <div class="col-md-3">
-	              <label class="form-label">Latitud</label>
-	              <input type="number" step="any" class="form-control" th:field="*{latitud}" th:errorclass="is-invalid">
-	              <div class="invalid-feedback" th:errors="*{latitud}"></div>
-	            </div>
-	            <div class="col-md-3">
-	              <label class="form-label">Longitud</label>
-	              <input type="number" step="any" class="form-control" th:field="*{longitud}" th:errorclass="is-invalid">
-	              <div class="invalid-feedback" th:errors="*{longitud}"></div>
-	            </div>
-	            <div class="col-md-6 small text-muted align-self-end">
-	              Para probar sin mapa: Comercio Zonal = lat -11.98561, lng -77.06178 · Residencial = lat -11.98435, lng -77.0597
-	            </div>
+				<!-- MAPA CON PIN (SIG) -->
+				<div class="col-12">
+				  <label class="form-label">Ubica tu local en el mapa (haz clic para colocar el pin)</label>
+				  <div id="mapa" th:data-geojson="@{/data/zonas_independencia.geojson}"
+				       style="height:380px; border-radius:12px; border:1px solid var(--borde)"></div>
+				  <div class="small mt-2" id="infoUbicacion">Aún no marcaste la ubicación.</div>
+				  <div class="text-danger small"
+				       th:if="${#fields.hasErrors('latitud') or #fields.hasErrors('longitud')}">
+				    Marca la ubicación de tu local en el mapa.
+				  </div>
+				  <input type="hidden" th:field="*{latitud}">
+				  <input type="hidden" th:field="*{longitud}">
+				</div>	
 	          </div>
 	        </div>
 	
@@ -241,7 +240,9 @@
 		  sincModalidad();
 		});
 	</script>
-	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+	<script th:src="@{/js/nuevo-tramite-mapa.js}"></script>
 </body>
 
 </html>

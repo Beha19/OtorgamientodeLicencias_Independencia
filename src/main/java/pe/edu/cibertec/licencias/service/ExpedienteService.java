@@ -37,6 +37,7 @@ public class ExpedienteService
     private final IRespuestaCondicion respuestas;
     private final IPago pagos;
     private final CalendarioService calendario;
+    private final IDocumentoAdjunto documentos;
     
     @Transactional
     public Expediente guardarBorrador(SolicitudForm f, Integer idSolicitante)
@@ -52,7 +53,15 @@ public class ExpedienteService
         Zona zona = zonas.buscarPorPunto(f.getLatitud(), f.getLongitud())
                 .orElseThrow(() -> new ReglaNegocioException(
                         "El punto marcado no está dentro de ninguna zona registrada del distrito"));
-
+        
+        // USO DE SUELO: EL GIRO DEBE ESTAR PERMITIDO EN LA ZONA DEL PIN (TABLA giro_zona)
+        if (zonas.contarCompatibilidad(giro.getIdGiro(), zona.getIdZona()) == 0)
+        {
+            throw new ReglaNegocioException("El giro \"" + giro.getNombre()
+                    + "\" no está permitido en la zona \"" + zona.getNombre()
+                    + "\". Elige otro giro o ubica el pin en una zona compatible.");
+        }
+        
         validarPersonaYRepresentante(f);
         validarVigencia(f);
 
@@ -182,12 +191,11 @@ public class ExpedienteService
             throw new ReglaNegocioException("Primero debes pagar el derecho de trámite");
         }
 
-        boolean djAceptada = declaraciones.findByExpediente_IdExpediente(idExpediente)
-                .map(d -> Boolean.TRUE.equals(d.getAceptaDj()))
-                .orElse(false);
-        if (!djAceptada)
+        boolean tieneDni = documentos.findByExpediente_IdExpediente(idExpediente)
+                .stream().anyMatch(d -> "DNI".equals(d.getTipo()));
+        if (!tieneDni)
         {
-            throw new ReglaNegocioException("Debes aceptar la declaración jurada para enviar");
+            throw new ReglaNegocioException("Debes adjuntar la copia de tu DNI antes de enviar el trámite");
         }
 
         LocalDateTime ahora = LocalDateTime.now();
@@ -198,7 +206,7 @@ public class ExpedienteService
         return expedientes.save(e);
     }
 
-    private Expediente cargarPropio(Integer idExpediente, Integer idSolicitante)
+    public Expediente cargarPropio(Integer idExpediente, Integer idSolicitante)
     {
         Expediente e = expedientes.findById(idExpediente)
                 .orElseThrow(() -> new ReglaNegocioException("No se encontró el expediente"));

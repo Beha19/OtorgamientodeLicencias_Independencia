@@ -21,4 +21,9 @@ public interface IZona extends JpaRepository<Zona, Integer>
                  + "LIMIT 1",
            nativeQuery = true)
     Optional<Zona> buscarPorPunto(@Param("lat") BigDecimal lat, @Param("lng") BigDecimal lng);
+    
+    // USO DE SUELO: ¿EL GIRO ESTÁ PERMITIDO EN ESA ZONA? (1 = sí, 0 = no)
+    @Query(value = "SELECT COUNT(*) FROM giro_zona WHERE id_giro = :idGiro AND id_zona = :idZona",
+           nativeQuery = true)
+    long contarCompatibilidad(@Param("idGiro") Integer idGiro, @Param("idZona") Integer idZona);
 }
