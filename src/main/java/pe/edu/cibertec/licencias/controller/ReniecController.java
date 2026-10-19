@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.cibertec.licencias.dto.ReniecDTO;
-import pe.edu.cibertec.licencias.repository.IPersonaReniecRepository;
+import pe.edu.cibertec.licencias.repository.IPersonaReniec;
 
 @RestController
 @RequestMapping("/api/reniec")
 public class ReniecController
 {
-	private final IPersonaReniecRepository personaReniecRepository;
+	private final IPersonaReniec personaReniecRepository;
 
-	public ReniecController(IPersonaReniecRepository personaReniecRepository)
+	public ReniecController(IPersonaReniec personaReniecRepository)
 	{
 		this.personaReniecRepository = personaReniecRepository;
 	}

@@ -23,7 +23,7 @@ import pe.edu.cibertec.licencias.service.UsuarioService;
 public class AdminUsuarioController
 {
 	private static final List<String> ROLES =
-			List.of("ADMINISTRADO", "REVISOR", "TECNICO", "SUBGERENTE", "ADMIN");
+			List.of("SOLICITANTE", "REVISOR", "TECNICO", "SUBGERENTE", "ADMIN");
 
 	private final UsuarioService usuarioService;
 
@@ -50,7 +50,7 @@ public class AdminUsuarioController
 	public String nuevo(Model model)
 	{
 		UsuarioDTO dto = new UsuarioDTO();
-		dto.setRol("ADMINISTRADO");
+		dto.setRol("SOLICITANTE");
 		model.addAttribute("usuario", dto);
 		return "admin/usuario-form";
 	}
@@ -68,7 +68,7 @@ public class AdminUsuarioController
 
 		Usuario u = encontrado.get();
 		UsuarioDTO dto = new UsuarioDTO();
-		dto.setCodigo(u.getCodigo());
+		dto.setCodigo(u.getIdUsuario());
 		dto.setDni(u.getDni());
 		dto.setNombres(u.getNombres());
 		dto.setApellidos(u.getApellidos());

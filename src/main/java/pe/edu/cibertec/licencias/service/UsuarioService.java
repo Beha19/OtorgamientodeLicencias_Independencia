@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pe.edu.cibertec.licencias.dto.CuentaDTO;
@@ -16,14 +16,15 @@ import pe.edu.cibertec.licencias.repository.IUsuario;
 public class UsuarioService
 {
 	private final IUsuario usuarioRepository;
-	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	private final PasswordEncoder passwordEncoder;
 
-	public UsuarioService(IUsuario usuarioRepository)
+	public UsuarioService(IUsuario usuarioRepository, PasswordEncoder passwordEncoder)
 	{
 		this.usuarioRepository = usuarioRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
-	// ---------- Crear cuenta (Tarea 2) ----------
+	//Crear cuenta 
 
 	public boolean existeDni(String dni)
 	{
@@ -46,19 +47,19 @@ public class UsuarioService
 		String telefono = dto.getTelefono();
 		usuario.setTelefono(telefono == null || telefono.isBlank() ? null : telefono);
 
-		usuario.setContrasena(encoder.encode(dto.getClave()));
-		usuario.setRol("ADMINISTRADO");
+		usuario.setClave(passwordEncoder.encode(dto.getClave()));
+		usuario.setRol("SOLICITANTE");
 		usuario.setDisponible(true);
 		usuario.setActivo(true);
 
 		return usuarioRepository.save(usuario);
 	}
 
-
+	//Mantenimiento de usuarios
 
 	public List<Usuario> listar()
 	{
-		return usuarioRepository.findAll(Sort.by("codigo"));
+		return usuarioRepository.findAll(Sort.by("idUsuario"));
 	}
 
 	public Optional<Usuario> buscarPorCodigo(Integer codigo)
@@ -66,19 +67,18 @@ public class UsuarioService
 		return usuarioRepository.findById(codigo);
 	}
 
-	
 	public boolean dniRepetido(String dni, Integer codigo)
 	{
 		return codigo == null
 				? usuarioRepository.existsByDni(dni)
-				: usuarioRepository.existsByDniAndCodigoNot(dni, codigo);
+				: usuarioRepository.existsByDniAndIdUsuarioNot(dni, codigo);
 	}
 
 	public boolean correoRepetido(String correo, Integer codigo)
 	{
 		return codigo == null
 				? usuarioRepository.existsByCorreo(correo)
-				: usuarioRepository.existsByCorreoAndCodigoNot(correo, codigo);
+				: usuarioRepository.existsByCorreoAndIdUsuarioNot(correo, codigo);
 	}
 
 	public Usuario guardar(UsuarioDTO dto)
@@ -107,16 +107,14 @@ public class UsuarioService
 
 		usuario.setRol(dto.getRol());
 
-	
 		if (dto.getClave() != null && !dto.getClave().isBlank())
 		{
-			usuario.setContrasena(encoder.encode(dto.getClave()));
+			usuario.setClave(passwordEncoder.encode(dto.getClave()));
 		}
 
 		return usuarioRepository.save(usuario);
 	}
 
-	
 	public void desactivar(Integer codigo)
 	{
 		usuarioRepository.findById(codigo).ifPresent(usuario ->

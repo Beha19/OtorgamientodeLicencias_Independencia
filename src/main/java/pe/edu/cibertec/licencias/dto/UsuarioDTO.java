@@ -32,7 +32,7 @@ public class UsuarioDTO
 	private String telefono;
 
 	@NotBlank(message = "Seleccione un rol")
-	@Pattern(regexp = "ADMINISTRADO|REVISOR|TECNICO|SUBGERENTE|ADMIN", message = "Rol no válido")
+	@Pattern(regexp = "SOLICITANTE|REVISOR|TECNICO|SUBGERENTE|ADMIN", message = "Rol no válido")
 	private String rol;
 
 	@Pattern(regexp = "|.{8,60}", message = "La contraseña debe tener entre 8 y 60 caracteres")

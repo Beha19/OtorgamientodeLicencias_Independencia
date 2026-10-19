@@ -1,66 +1,60 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Mis expedientes - Licencias de Funcionamiento</title>
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-	</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mis expedientes - LicenControl')}"></head>
 
-	<body class="bg-light">
-		<!-- Aqui ira el encabezado/menu comun de Bea -->
-		<div class="container py-4">
-			<h1 class="h3">Sistema de Licencias de Funcionamiento</h1>
-			<p class="text-muted">Municipalidad de Independencia</p>
-		</div>
+<body class="app-body">
+	<div class="d-flex">
+		<aside th:replace="~{fragments/layout :: sidebar('expedientes')}"></aside>
 
-		<main class="container pb-5">
-			<div class="card shadow-sm">
-				<div class="card-body p-4">
-					<h2 class="h4 mb-3">Mis expedientes</h2>
+		<div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+			<header th:replace="~{fragments/layout :: encabezado}"></header>
 
-					<div class="alert alert-warning" th:if="${sinUsuario}">
-						No se pudo identificar al usuario. Mientras no exista el login, usa
-						<code>/expedientes/mis?usuario=CODIGO</code>.
+			<main class="flex-grow-1">
+				<div class="panel">
+					<div class="panel-titulo">
+						<h2><i class="bi bi-folder"></i>Mis expedientes</h2>
 					</div>
 
-					<div th:unless="${sinUsuario}">
-						<div class="table-responsive">
-							<table class="table table-striped table-bordered align-middle">
-								<thead class="table-light">
-									<tr>
-										<th>N.° de expediente</th>
-										<th>Nombre comercial</th>
-										<th>Giro</th>
-										<th>Estado</th>
-										<th>Fecha de registro</th>
-										<th>Fecha límite</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="e : ${expedientes}">
-										<td th:text="${e.numero}"></td>
-										<td th:text="${e.nombreComercial}"></td>
-										<td th:text="${e.giro.nombre}"></td>
-										<td>
-											<span class="badge"
-												th:text="${e.estado}"
-												th:classappend="${e.estado == 'APROBADO'} ? 'bg-success'
-													: (${e.estado == 'DENEGADO'} ? 'bg-danger'
-													: (${e.estado == 'OBSERVADO'} ? 'bg-warning text-dark' : 'bg-secondary'))"></span>
-										</td>
-										<td th:text="${#temporals.format(e.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></td>
-										<td th:text="${#temporals.format(e.fechaLimite, 'dd/MM/yyyy')}"></td>
-									</tr>
-									<tr th:if="${#lists.isEmpty(expedientes)}">
-										<td colspan="6" class="text-center text-muted">No tienes expedientes registrados.</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered align-middle">
+							<thead>
+								<tr>
+									<th>N.° de expediente</th>
+									<th>Nombre comercial</th>
+									<th>Giro</th>
+									<th>Estado</th>
+									<th>Fecha de registro</th>
+									<th>Fecha límite</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="e : ${expedientes}">
+									<td th:text="${e.numero} ?: '—'"></td>
+									<td th:text="${e.nombreComercial}"></td>
+									<td th:text="${e.giro.nombre}"></td>
+									<td>
+										<span class="badge" th:text="${e.estado}"
+											th:classappend="${e.estado == 'APROBADO' ? 'bg-success'
+												: (e.estado == 'DENEGADO' ? 'bg-danger'
+												: (e.estado == 'OBSERVADO' ? 'bg-warning text-dark'
+												: (e.estado == 'BORRADOR' or e.estado == 'PAGADO_SIN_ENVIO' ? 'bg-secondary' : 'bg-info text-dark')))}"></span>
+									</td>
+									<td th:text="${#temporals.format(e.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></td>
+									<td th:text="${e.fechaLimite != null} ? ${#temporals.format(e.fechaLimite, 'dd/MM/yyyy')} : '—'"></td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(expedientes)}">
+									<td colspan="6" class="text-center text-muted">No tienes expedientes registrados.</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
-			</div>
-		</main>
-	</body>
+			</main>
+
+			<footer th:replace="~{fragments/layout :: pie}"></footer>
+		</div>
+	</div>
+
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
 </html>

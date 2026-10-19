@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pe.edu.cibertec.licencias.service.LicenciaService;
 
 @Controller
-@RequestMapping("/licencias")
+@RequestMapping("/subgerente/licencias")
 public class LicenciaController
 {
 	private final LicenciaService licenciaService;

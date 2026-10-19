@@ -24,7 +24,7 @@ public class LicenciaService
 
 	public List<Giro> listarGiros()
 	{
-		return giroRepository.findByActivoTrueOrderByNombre();
+		return giroRepository.findByActivoTrueOrderByNombreAsc();
 	}
 
 	public List<Licencia> buscar(LocalDate desde, LocalDate hasta, Integer giro)

@@ -14,7 +14,7 @@ import pe.edu.cibertec.licencias.dto.CuentaDTO;
 import pe.edu.cibertec.licencias.service.UsuarioService;
 
 @Controller
-@RequestMapping("/cuenta")
+@RequestMapping("/registro")
 public class CuentaController
 {
 	private final UsuarioService usuarioService;
@@ -24,14 +24,14 @@ public class CuentaController
 		this.usuarioService = usuarioService;
 	}
 
-	@GetMapping("/crear")
+	@GetMapping
 	public String crear(Model model)
 	{
 		model.addAttribute("cuenta", new CuentaDTO());
 		return "cuenta/crear";
 	}
 
-	@PostMapping("/crear")
+	@PostMapping
 	public String guardar(@Valid @ModelAttribute("cuenta") CuentaDTO cuenta,
 			BindingResult result, RedirectAttributes redirect)
 	{
@@ -51,7 +51,7 @@ public class CuentaController
 		}
 
 		usuarioService.crearCuenta(cuenta);
-		redirect.addFlashAttribute("mensaje", "Cuenta creada correctamente.");
-		return "redirect:/cuenta/crear";
+		redirect.addFlashAttribute("mensaje", "Cuenta creada correctamente. Ya puedes iniciar sesión.");
+		return "redirect:/registro";
 	}
 }
