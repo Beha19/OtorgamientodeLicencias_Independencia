@@ -44,7 +44,7 @@
 	    <th:block th:case="'SOLICITANTE'">
 	      <a th:replace="~{this :: enlace(@{/solicitante/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace(@{/solicitante/tramite/nuevo}, 'bi-file-earmark-text', 'Trámites', 'tramites', ${activo})}"></a>
-	      <a th:replace="~{this :: enlace('#', 'bi-folder', 'Mis expedientes', 'expedientes', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace(@{/solicitante/expedientes}, 'bi-folder', 'Mis expedientes', 'expedientes', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace('#', 'bi-credit-card', 'Mis pagos', 'pagos', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace('#', 'bi-bell', 'Notificaciones', 'notificaciones', ${activo})}"></a>
 	      <div class="menu-titulo">Cuenta</div>
