@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Reportes - LicenControl')}"></head>
+
+<body class="app-body">
+    <div class="d-flex">
+        <aside th:replace="~{fragments/layout :: sidebar('reportes')}"></aside>
+
+        <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+            <header th:replace="~{fragments/layout :: encabezado}"></header>
+
+            <main class="flex-grow-1 container-fluid p-4">
+
+                <div class="mb-4">
+                    <h1 class="h3">Reportes</h1>
+                    <p class="text-muted">Certificados de licencia de funcionamiento en PDF.</p>
+                </div>
+
+                <div class="panel">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Reporte</th>
+                                    <th>N.° de licencia</th>
+                                    <th>Negocio</th>
+                                    <th>Titular</th>
+                                    <th>Fecha de emisión</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="lic : ${licencias}">
+                                    <td><i class="bi bi-file-earmark-pdf text-danger me-1"></i>Certificado de licencia</td>
+                                    <td th:text="${lic.numero}"></td>
+                                    <td th:text="${lic.expediente.nombreComercial}"></td>
+                                    <td th:text="${lic.expediente.solicitante.nombres + ' ' + lic.expediente.solicitante.apellidos}"></td>
+                                    <td th:text="${#temporals.format(lic.fechaEmision, 'dd/MM/yyyy')}"></td>
+                                    <td class="text-nowrap">
+                                        <a class="btn btn-sm btn-muni" target="_blank"
+                                           th:href="@{/subgerente/reportes/certificado/{id}(id=${lic.idLicencia})}">
+                                            <i class="bi bi-eye me-1"></i> Ver reporte
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(licencias)}">
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        Aún no hay licencias emitidas.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+
+            <footer th:replace="~{fragments/layout :: pie}"></footer>
+        </div>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

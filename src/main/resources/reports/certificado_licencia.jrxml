@@ -1,0 +1,227 @@
+<!-- Created with Jaspersoft Studio version 7.0.8.final using JasperReports Library version 7.0.8-6f896111  -->
+<jasperReport name="certificado_licencia" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="434366db-8f98-43d1-9f63-c6ca057c0efd">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<parameter name="ID_LICENCIA" class="java.lang.Integer"/>
+	<query language="SQL"><![CDATA[SELECT
+  l.numero            AS numero_licencia,
+  l.fecha_emision     AS fecha_emision,
+  l.estado            AS estado_licencia,
+  e.numero            AS numero_expediente,
+  e.nombre_comercial  AS nombre_comercial,
+  e.actividad         AS actividad,
+  e.tipo_persona      AS tipo_persona,
+  e.ruc               AS ruc,
+  e.razon_social      AS razon_social,
+  e.modalidad         AS modalidad,
+  e.fecha_fin_vigencia AS fecha_fin_vigencia,
+  g.codigo_ciiu       AS codigo_ciiu,
+  g.nombre            AS giro,
+  g.nivel_riesgo      AS nivel_riesgo,
+  CONCAT(es.via_tipo, ' ', es.via_nombre, ' ', es.numero,
+         IF(es.interior <> '', CONCAT(' Int. ', es.interior), '')) AS direccion,
+  es.area_m2          AS area_m2,
+  z.codigo            AS zona_codigo,
+  z.nombre            AS zona,
+  CONCAT(s.nombres, ' ', s.apellidos) AS titular,
+  s.dni               AS dni_titular,
+  CONCAT(f.nombres, ' ', f.apellidos) AS firmante
+FROM licencia l
+JOIN expediente e       ON e.id_expediente = l.id_expediente
+JOIN establecimiento es ON es.id_establecimiento = e.id_establecimiento
+JOIN zona z             ON z.id_zona = es.id_zona
+JOIN giro g             ON g.id_giro = e.id_giro
+JOIN usuario s          ON s.id_usuario = e.id_solicitante
+JOIN usuario f          ON f.id_usuario = l.id_firmante
+WHERE l.id_licencia = $P{ID_LICENCIA}]]></query>
+	<field name="numero_licencia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero_licencia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="licencia"/>
+	</field>
+	<field name="fecha_emision" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_emision"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_emision"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="licencia"/>
+	</field>
+	<field name="estado_licencia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estado"/>
+		<property name="com.jaspersoft.studio.field.label" value="estado_licencia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="licencia"/>
+	</field>
+	<field name="numero_expediente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero_expediente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="expediente"/>
+	</field>
+	<field name="nombre_comercial" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_comercial"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_comercial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="expediente"/>
+	</field>
+	<field name="actividad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="actividad"/>
+		<property name="com.jaspersoft.studio.field.label" value="actividad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="expediente"/>
+	</field>
+	<field name="tipo_persona" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_persona"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_persona"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="expediente"/>
+	</field>
+	<field name="ruc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ruc"/>
+		<property name="com.jaspersoft.studio.field.label" value="ruc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="expediente"/>
+	</field>
+	<field name="razon_social" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="razon_social"/>
+		<property name="com.jaspersoft.studio.field.label" value="razon_social"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="expediente"/>
+	</field>
+	<field name="modalidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="modalidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="modalidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="expediente"/>
+	</field>
+	<field name="fecha_fin_vigencia" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_fin_vigencia"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_fin_vigencia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="expediente"/>
+	</field>
+	<field name="codigo_ciiu" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codigo_ciiu"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigo_ciiu"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="giro"/>
+	</field>
+	<field name="giro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="giro"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="giro"/>
+	</field>
+	<field name="nivel_riesgo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nivel_riesgo"/>
+		<property name="com.jaspersoft.studio.field.label" value="nivel_riesgo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="giro"/>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="direccion"/>
+		<property name="com.jaspersoft.studio.field.label" value="direccion"/>
+	</field>
+	<field name="area_m2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="area_m2"/>
+		<property name="com.jaspersoft.studio.field.label" value="area_m2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="establecimiento"/>
+	</field>
+	<field name="zona_codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="zona_codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="zona"/>
+	</field>
+	<field name="zona" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="zona"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="zona"/>
+	</field>
+	<field name="titular" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="titular"/>
+		<property name="com.jaspersoft.studio.field.label" value="titular"/>
+	</field>
+	<field name="dni_titular" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dni"/>
+		<property name="com.jaspersoft.studio.field.label" value="dni_titular"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="firmante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="firmante"/>
+		<property name="com.jaspersoft.studio.field.label" value="firmante"/>
+	</field>
+	<background height="777">
+		<element kind="rectangle" uuid="3848b44d-4e96-4bba-a901-3c2476ea0be1" x="0" y="0" width="560" height="770"/>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</background>
+	<title height="111" splitType="Stretch">
+		<element kind="staticText" uuid="7bab50d3-d2f5-4984-bf19-32de41338dce" x="136" y="10" width="283" height="60" fontSize="16.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[MUNICIPALIDAD DISTRITAL DE INDEPENDENCIA]]></text>
+		</element>
+		<element kind="staticText" uuid="2bd5544f-844b-45de-b044-3877c6699fa0" x="200" y="60" width="162" height="30" fontSize="11.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[LICENCIA DE FUNCIONAMIENTO]]></text>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</title>
+	<detail>
+		<band height="429" splitType="Stretch">
+			<element kind="textField" uuid="7470bf16-1242-41e8-9ec2-e08489b814e5" x="158" y="20" width="158" height="30" fontSize="14.0" bold="false">
+				<expression><![CDATA[$F{numero_licencia}]]></expression>
+			</element>
+			<element kind="staticText" uuid="e67817f4-d2d1-4c51-980c-c3b78ecb7f9c" x="20" y="20" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Numero de licencia]]></text>
+			</element>
+			<element kind="textField" uuid="713d0d2c-ff42-4e00-8acc-d09cdde1dd17" x="158" y="52" width="158" height="30" fontSize="13.0" pattern="dd/MM/yyyy" hTextAlign="Left">
+				<expression><![CDATA[$F{fecha_emision}]]></expression>
+			</element>
+			<element kind="staticText" uuid="a91eb823-7fcb-400e-a375-26f0f6e2e804" x="20" y="52" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Fecha de emision:]]></text>
+			</element>
+			<element kind="textField" uuid="d8a88456-362d-496e-9e62-2ec57ec7e46a" x="158" y="82" width="158" height="30" fontSize="13.0">
+				<expression><![CDATA[$F{titular}]]></expression>
+			</element>
+			<element kind="staticText" uuid="15de42dd-fb63-4141-88ca-c20a3cc402bf" x="20" y="82" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Titular:]]></text>
+			</element>
+			<element kind="textField" uuid="ea9f3a72-77cc-45ff-a22a-9c4a74654e13" x="158" y="112" width="158" height="30" fontSize="13.0">
+				<expression><![CDATA[$F{dni_titular}]]></expression>
+			</element>
+			<element kind="staticText" uuid="37deedbf-ac83-49e2-bc20-14068863fd4a" x="20" y="112" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[DNI:]]></text>
+			</element>
+			<element kind="textField" uuid="c4c8721d-9614-4330-bf9d-459872828a82" x="156" y="140" width="259" height="30" fontSize="13.0">
+				<expression><![CDATA[$F{nombre_comercial}]]></expression>
+			</element>
+			<element kind="staticText" uuid="0f7b1b22-94b8-4c7f-865c-07126e5cc326" x="20" y="142" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Nombre comercial:]]></text>
+			</element>
+			<element kind="textField" uuid="0bd04cd1-7abd-48cc-94b8-7663c0eb5db6" x="158" y="172" width="158" height="30" fontSize="13.0">
+				<expression><![CDATA[$F{giro}]]></expression>
+			</element>
+			<element kind="staticText" uuid="721c0408-3efa-4c21-9759-6f762fc2fa7b" x="18" y="172" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Giro:]]></text>
+			</element>
+			<element kind="textField" uuid="1d982de7-3b52-465b-a9aa-a9bee333ec71" x="158" y="200" width="259" height="30" fontSize="13.0">
+				<expression><![CDATA[$F{direccion}]]></expression>
+			</element>
+			<element kind="staticText" uuid="150a9dc0-debd-4844-b881-415e39606afe" x="18" y="202" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Direccion:]]></text>
+			</element>
+			<element kind="textField" uuid="b3e04781-47c2-4441-b6b8-24b54eb0253e" x="158" y="230" width="158" height="30" fontSize="13.0">
+				<expression><![CDATA[$F{area_m2}]]></expression>
+			</element>
+			<element kind="staticText" uuid="ba49a985-7c72-4bb7-a425-5da896fc59b5" x="18" y="232" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Area del local (m2):]]></text>
+			</element>
+			<element kind="textField" uuid="adce10e4-47de-43ac-9539-ee8aa24914fd" x="158" y="260" width="158" height="30" fontSize="13.0">
+				<expression><![CDATA[$F{zona}]]></expression>
+			</element>
+			<element kind="staticText" uuid="d0f330e9-c722-4a90-9d51-4daab3b5ecaa" x="18" y="262" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Zona:]]></text>
+			</element>
+			<element kind="textField" uuid="009f6130-4d4c-4426-88ef-3fca8d7a6c3e" x="158" y="292" width="158" height="30" fontSize="13.0">
+				<expression><![CDATA[$F{modalidad}]]></expression>
+			</element>
+			<element kind="staticText" uuid="2315572b-8b06-4eba-9896-6d6f06dc9e16" x="18" y="292" width="138" height="30" fontSize="13.0" bold="true">
+				<text><![CDATA[Modalidad:]]></text>
+			</element>
+			<element kind="textField" uuid="6a3594f9-03d7-48f7-840a-3323b47517c1" x="250" y="380" width="100" height="30" hTextAlign="Center">
+				<expression><![CDATA[$F{firmante}]]></expression>
+			</element>
+			<element kind="staticText" uuid="ad685ddc-cf81-4296-9de4-c7cb9509afea" x="193" y="380" width="53" height="30">
+				<text><![CDATA[Firmante]]></text>
+			</element>
+			<element kind="line" uuid="c1a8e19d-773c-4f60-aab5-a2a9a8639fa9" x="170" y="379" width="200" height="1">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+		</band>
+	</detail>
+</jasperReport>
