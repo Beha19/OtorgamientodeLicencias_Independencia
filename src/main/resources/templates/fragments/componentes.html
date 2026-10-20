@@ -29,5 +29,113 @@
 	  <span class="chip" th:if="${chipTexto != ''}" th:classappend="${chipClase}" th:text="${chipTexto}"></span>
 </div>
 
+	<!-- Datos completos de un expediente (usan el revisor y el tecnico).
+	     d = DetalleExpediente, rutaDocs = prefijo URL para abrir documentos -->
+	<div th:fragment="datos(d, rutaDocs)">
+		<div class="row g-3 mb-3">
+			<div class="col-lg-6">
+				<div class="panel">
+					<div class="panel-titulo"><h2><i class="bi bi-file-earmark-text"></i>Datos del trámite</h2></div>
+					<dl class="row mb-0 small">
+						<dt class="col-5">N.° de expediente</dt>
+						<dd class="col-7" th:text="${d.expediente.numero} ?: '—'"></dd>
+						<dt class="col-5">Nombre comercial</dt>
+						<dd class="col-7" th:text="${d.expediente.nombreComercial}"></dd>
+						<dt class="col-5">Giro</dt>
+						<dd class="col-7" th:text="${d.expediente.giro.nombre + ' (riesgo ' + d.expediente.giro.nivelRiesgo + ')'}"></dd>
+						<dt class="col-5">Actividad</dt>
+						<dd class="col-7" th:text="${d.expediente.actividad} ?: '—'"></dd>
+						<dt class="col-5">Tipo de persona</dt>
+						<dd class="col-7" th:text="${d.expediente.tipoPersona}"></dd>
+						<dt class="col-5" th:if="${d.expediente.ruc != null}">RUC / Razón social</dt>
+						<dd class="col-7" th:if="${d.expediente.ruc != null}" th:text="${d.expediente.ruc + ' · ' + d.expediente.razonSocial}"></dd>
+						<dt class="col-5">Modalidad</dt>
+						<dd class="col-7" th:text="${d.expediente.modalidad + (d.expediente.fechaFinVigencia != null ? ' hasta ' + #temporals.format(d.expediente.fechaFinVigencia, 'dd/MM/yyyy') : '')}"></dd>
+						<dt class="col-5">Enviado el</dt>
+						<dd class="col-7" th:text="${d.expediente.fechaEnvio != null} ? ${#temporals.format(d.expediente.fechaEnvio, 'dd/MM/yyyy HH:mm')} : '—'"></dd>
+						<dt class="col-5">Fecha límite</dt>
+						<dd class="col-7" th:text="${d.expediente.fechaLimite != null} ? ${#temporals.format(d.expediente.fechaLimite, 'dd/MM/yyyy')} : '—'"></dd>
+					</dl>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+				<div class="panel">
+					<div class="panel-titulo"><h2><i class="bi bi-geo-alt"></i>Local y solicitante</h2></div>
+					<dl class="row mb-0 small">
+						<dt class="col-5">Dirección</dt>
+						<dd class="col-7" th:text="${d.expediente.establecimiento.viaTipo + ' ' + d.expediente.establecimiento.viaNombre + ' ' + d.expediente.establecimiento.numero
+							+ (d.expediente.establecimiento.interior != '' ? ' Int. ' + d.expediente.establecimiento.interior : '')}"></dd>
+						<dt class="col-5">Zona</dt>
+						<dd class="col-7" th:text="${d.expediente.establecimiento.zona.codigo + ' · ' + d.expediente.establecimiento.zona.nombre}"></dd>
+						<dt class="col-5">Área</dt>
+						<dd class="col-7" th:text="${d.expediente.establecimiento.areaM2 + ' m²'}"></dd>
+						<dt class="col-5">Uso de suelo</dt>
+						<dd class="col-7">
+							<span class="badge bg-success" th:if="${d.usoDeSueloPermitido}">Giro permitido en la zona</span>
+							<span class="badge bg-danger" th:unless="${d.usoDeSueloPermitido}">Giro NO permitido en la zona</span>
+						</dd>
+						<dt class="col-5">Solicitante</dt>
+						<dd class="col-7" th:text="${d.expediente.solicitante.nombres + ' ' + d.expediente.solicitante.apellidos}"></dd>
+						<dt class="col-5">DNI</dt>
+						<dd class="col-7" th:text="${d.expediente.solicitante.dni}"></dd>
+						<dt class="col-5">Correo</dt>
+						<dd class="col-7" th:text="${d.expediente.solicitante.correo}"></dd>
+						<dt class="col-5" th:if="${d.representante != null}">Representante</dt>
+						<dd class="col-7" th:if="${d.representante != null}"
+							th:text="${d.representante.nombres + ' ' + d.representante.apellidos + ' (DNI ' + d.representante.dni + ') · ' + d.representante.tipoPoder}"></dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+
+		<div class="row g-3 mb-3">
+			<div class="col-lg-5">
+				<div class="panel">
+					<div class="panel-titulo"><h2><i class="bi bi-paperclip"></i>Documentos adjuntos</h2></div>
+					<ul class="list-unstyled mb-0 small">
+						<li th:each="doc : ${d.documentos}" class="mb-1">
+							<i class="bi bi-file-earmark me-1"></i>
+							<a th:href="@{${rutaDocs + doc.idDocumento}}" target="_blank" th:text="${doc.tipo + ' · ' + doc.nombreArchivo}"></a>
+						</li>
+						<li th:if="${#lists.isEmpty(d.documentos)}" class="text-muted">No hay documentos adjuntos.</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-lg-7">
+				<div class="panel">
+					<div class="panel-titulo"><h2><i class="bi bi-shield-check"></i>Declaración jurada de seguridad</h2></div>
+					<p class="small mb-2" th:if="${d.declaracion != null}"
+						th:text="${'Aforo: ' + (d.declaracion.aforo ?: '—') + ' · Antigüedad: ' + (d.declaracion.antiguedadAnios ?: '—') + ' años · Área techada: ' + (d.declaracion.areaTechadaM2 ?: '—') + ' m²'}"></p>
+					<p class="small text-muted mb-0" th:if="${d.declaracion == null}">El expediente no tiene declaración jurada.</p>
+					<div class="table-responsive" th:if="${d.declaracion != null}">
+						<table class="table table-sm table-striped align-middle small mb-0">
+							<thead><tr><th>Condición</th><th class="text-center">Respuesta</th></tr></thead>
+							<tbody>
+								<tr th:each="r : ${d.respuestas}">
+									<td th:text="${r.condicion.descripcion}"></td>
+									<td class="text-center">
+										<span class="badge bg-success" th:if="${r.cumple}">Cumple</span>
+										<span class="badge bg-secondary" th:unless="${r.cumple}">No corresponde</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel mb-3" th:if="${!#lists.isEmpty(d.observaciones)}">
+			<div class="panel-titulo"><h2><i class="bi bi-chat-left-text"></i>Observaciones anteriores</h2></div>
+			<div class="small mb-2" th:each="o : ${d.observaciones}">
+				<strong th:text="${o.numeroOficio + ' · ' + o.etapa}"></strong>
+				<span class="text-muted" th:text="${' · ' + #temporals.format(o.fecha, 'dd/MM/yyyy HH:mm')}"></span>
+				<div th:text="${o.descripcion}"></div>
+			</div>
+		</div>
+	</div>
+
 </body>
-</html>
+</html>
