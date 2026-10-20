@@ -2,7 +2,6 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 
-<!-- ===================================== EL CSS, LAS FUENTES E ICONOS==================================== -->
 <head th:fragment="head(titulo)">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,14 +21,13 @@
 </head>
 
 <body>
-<!-- ================================= LÍNEA DEL MENÚ ================================== -->
 	<a th:fragment="enlace(url, icono, texto, clave, activo)"
 	   class="nav-link" th:href="${url}" th:classappend="${clave == activo} ? 'active'">
 	  <i class="bi" th:classappend="${icono}"></i>
 	  <span th:text="${texto}">Opción</span>
 	</a>
 	
-	<!-- ================= MI SIDEBAR .- CAMBIA SEGUN EL ROL  ================= -->
+>
 	<aside th:fragment="sidebar(activo)" class="sidebar">
 	  <div class="marca">
 	    <div class="logo">
@@ -79,7 +77,7 @@
 	      <a th:replace="~{this :: enlace('#', 'bi-folder2-open', 'Expedientes', 'expedientes', ${activo})}"></a>
 	      <div class="menu-titulo">Reportes</div>
 	      <a th:replace="~{this :: enlace('#', 'bi-award', 'Licencias emitidas', 'licencias', ${activo})}"></a>
-	      <a th:replace="~{this :: enlace('#', 'bi-file-earmark-pdf', 'Reportes', 'reportes', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace(@{/subgerente/reportes}, 'bi-file-earmark-pdf', 'Reportes', 'reportes', ${activo})}"></a>
 	      <div class="menu-titulo">Cuenta</div>
 	      <a th:replace="~{this :: enlace('#', 'bi-person', 'Mi cuenta', 'cuenta', ${activo})}"></a>
 	    </th:block>
@@ -103,7 +101,6 @@
 	  </div>
 	</aside>
 	
-	<!-- ================= HEAD JPANEL ================= -->
 	<header th:fragment="encabezado" class="encabezado">
 	  <div class="saludo">
 	    <i class="clima bi" id="clima"></i>
@@ -145,7 +142,6 @@
 	  </div>
 	</header>
 	
-	<!-- ================= PIE DE PÁGINA + BOTÓN DE ATENCIÓN ================= -->
 	<footer th:fragment="pie">
 	  <div class="pie-pagina">
 	    <span>2026 LicenControl · Municipalidad Distrital de Independencia</span><span>Versión 1.0</span>
@@ -166,8 +162,7 @@
 	    </form>
 	  </div>
 	</footer>
-	
-	<!-- ================= SCRIPTS COMUNES (van al final del body) ================= -->
+
 	<th:block th:fragment="scripts">
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>

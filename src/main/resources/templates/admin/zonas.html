@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Mantenimiento de zonas - LicenControl')}"></head>
+
+<body class="app-body">
+<div class="d-flex">
+
+    <aside th:replace="~{fragments/layout :: sidebar('giros')}"></aside>
+
+    <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+
+        <header th:replace="~{fragments/layout :: encabezado}"></header>
+
+        <main class="flex-grow-1 container-fluid p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3">Mantenimiento de zonas</h1>
+                    <p class="text-muted">
+                        Administra las zonas de funcionamiento y sus descripciones.
+                    </p>
+                </div>
+
+                <a class="btn btn-primary" th:href="@{/admin/zonas/nuevo}">
+                    Nueva zona
+                </a>
+            </div>
+
+            <div th:if="${mensaje}"
+                 class="alert alert-success"
+                 th:text="${mensaje}">
+            </div>
+
+            <div class="panel">
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr th:each="zona : ${zonas}">
+
+                                <td th:text="${zona.codigo}"></td>
+
+                                <td th:text="${zona.nombre}"></td>
+
+                                <td th:text="${zona.descripcion}"></td>
+
+                                <td>
+                                    <span th:if="${zona.activo}"
+                                          class="badge text-bg-success">
+                                        Activa
+                                    </span>
+
+                                    <span th:unless="${zona.activo}"
+                                          class="badge text-bg-secondary">
+                                        Inactiva
+                                    </span>
+                                </td>
+
+                                <td class="text-nowrap">
+
+                                    <a class="btn btn-sm btn-outline-primary"
+                                       th:href="@{/admin/zonas/editar/{id}(id=${zona.idZona})}">
+                                        Editar
+                                    </a>
+
+                                    <form th:if="${zona.activo}"
+                                          th:action="@{/admin/zonas/desactivar/{id}(id=${zona.idZona})}"
+                                          method="post"
+                                          class="d-inline">
+
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                type="submit">
+                                            Desactivar
+                                        </button>
+
+                                    </form>
+
+                                </td>
+                            </tr>
+
+                            <tr th:if="${#lists.isEmpty(zonas)}">
+                                <td colspan="5"
+                                    class="text-center text-muted py-4">
+                                    No hay zonas registradas.
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </main>
+
+        <footer th:replace="~{fragments/layout :: pie}"></footer>
+
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+</body>
+</html>
