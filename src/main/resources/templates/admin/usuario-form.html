@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Formulario de usuario - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+		<aside th:replace="~{fragments/layout :: sidebar('usuarios')}"></aside>
+
+		<div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+			<header th:replace="~{fragments/layout :: encabezado}"></header>
+
+			<main class="flex-grow-1">
+				<div class="panel">
+					<div class="panel-titulo">
+						<h2><i class="bi bi-person-lines-fill"></i>
+							<span th:text="${usuario.codigo == null} ? 'Nuevo usuario' : 'Editar usuario'">Nuevo usuario</span>
+						</h2>
+					</div>
+
+					<form th:action="@{/admin/usuarios/guardar}" th:object="${usuario}" method="post" novalidate>
+						<input type="hidden" th:field="*{codigo}">
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label for="dni" class="form-label">DNI</label>
+								<input type="text" class="form-control" th:field="*{dni}" maxlength="8"
+									th:classappend="${#fields.hasErrors('dni')} ? 'is-invalid'">
+								<div class="text-danger small" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label for="rol" class="form-label">Rol</label>
+								<select class="form-select" th:field="*{rol}"
+									th:classappend="${#fields.hasErrors('rol')} ? 'is-invalid'">
+									<option th:each="r : ${roles}" th:value="${r}"
+										th:text="${r == 'REVISOR'} ? 'REVISOR (mesa de partes)' : ${r}"></option>
+								</select>
+								<div class="text-danger small" th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}"></div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label for="nombres" class="form-label">Nombres</label>
+								<input type="text" class="form-control" th:field="*{nombres}" maxlength="100"
+									th:classappend="${#fields.hasErrors('nombres')} ? 'is-invalid'">
+								<div class="text-danger small" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label for="apellidos" class="form-label">Apellidos</label>
+								<input type="text" class="form-control" th:field="*{apellidos}" maxlength="100"
+									th:classappend="${#fields.hasErrors('apellidos')} ? 'is-invalid'">
+								<div class="text-danger small" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label for="correo" class="form-label">Correo electrónico</label>
+								<input type="email" class="form-control" th:field="*{correo}" maxlength="100"
+									th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid'">
+								<div class="text-danger small" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label for="telefono" class="form-label">Teléfono (opcional)</label>
+								<input type="text" class="form-control" th:field="*{telefono}" maxlength="9"
+									th:classappend="${#fields.hasErrors('telefono')} ? 'is-invalid'">
+								<div class="text-danger small" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+							</div>
+						</div>
+
+						<div class="mb-4">
+							<label for="clave" class="form-label">Contraseña</label>
+							<input type="password" class="form-control" th:field="*{clave}" maxlength="60"
+								placeholder="Al editar, déjala vacía para no cambiarla"
+								th:classappend="${#fields.hasErrors('clave')} ? 'is-invalid'">
+							<div class="text-danger small" th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></div>
+						</div>
+
+						<button type="submit" class="btn btn-primary">Guardar</button>
+						<a th:href="@{/admin/usuarios}" class="btn btn-secondary">Cancelar</a>
+					</form>
+				</div>
+			</main>
+
+			<footer th:replace="~{fragments/layout :: pie}"></footer>
+		</div>
+	</div>
+
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

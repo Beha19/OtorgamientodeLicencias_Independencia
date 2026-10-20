@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Licencias emitidas - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+		<aside th:replace="~{fragments/layout :: sidebar('licencias')}"></aside>
+
+		<div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+			<header th:replace="~{fragments/layout :: encabezado}"></header>
+
+			<main class="flex-grow-1">
+				<div class="panel">
+					<div class="panel-titulo">
+						<h2><i class="bi bi-award"></i>Licencias emitidas</h2>
+					</div>
+
+					<form th:action="@{/subgerente/licencias}" method="get" class="row g-3 align-items-end mb-4">
+						<div class="col-md-3">
+							<label for="desde" class="form-label">Desde</label>
+							<input type="date" class="form-control" id="desde" name="desde" th:value="${desde}">
+						</div>
+						<div class="col-md-3">
+							<label for="hasta" class="form-label">Hasta</label>
+							<input type="date" class="form-control" id="hasta" name="hasta" th:value="${hasta}">
+						</div>
+						<div class="col-md-3">
+							<label for="giro" class="form-label">Giro</label>
+							<select class="form-select" id="giro" name="giro">
+								<option value="">Todos</option>
+								<option th:each="g : ${giros}" th:value="${g.idGiro}" th:text="${g.nombre}"
+									th:selected="${giro != null and giro == g.idGiro}"></option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<button type="submit" class="btn btn-primary">Buscar</button>
+							<a th:href="@{/subgerente/licencias}" class="btn btn-secondary">Limpiar</a>
+						</div>
+					</form>
+
+					<div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered align-middle">
+							<thead>
+								<tr>
+									<th>N.° de licencia</th>
+									<th>N.° de expediente</th>
+									<th>Nombre comercial</th>
+									<th>Titular</th>
+									<th>Giro</th>
+									<th>Fecha de emisión</th>
+									<th>Estado</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="l : ${licencias}">
+									<td th:text="${l.numero}"></td>
+									<td th:text="${l.expediente.numero} ?: '—'"></td>
+									<td th:text="${l.expediente.nombreComercial}"></td>
+									<td th:text="${l.expediente.solicitante.nombres + ' ' + l.expediente.solicitante.apellidos}"></td>
+									<td th:text="${l.expediente.giro.nombre}"></td>
+									<td th:text="${#temporals.format(l.fechaEmision, 'dd/MM/yyyy HH:mm')}"></td>
+									<td>
+										<span class="badge" th:text="${l.estado}"
+											th:classappend="${l.estado == 'VIGENTE'} ? 'bg-success' : 'bg-danger'"></span>
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(licencias)}">
+									<td colspan="7" class="text-center text-muted">No se encontraron licencias.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</main>
+
+			<footer th:replace="~{fragments/layout :: pie}"></footer>
+		</div>
+	</div>
+
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

@@ -289,4 +289,8 @@ public class ExpedienteService
             throw new ReglaNegocioException("Indica una fecha de fin de vigencia posterior a hoy");
         }
     }
+    public List<Expediente> listarPorSolicitante(Integer idUsuario)
+    {
+        return expedientes.findBySolicitante_IdUsuarioOrderByFechaRegistroDesc(idUsuario);
+    }
 }

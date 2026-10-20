@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Crear cuenta - LicenControl')}"></head>
+
+<body class="bg-body-tertiary">
+
+	<div class="container py-4">
+		<h1 class="h3">LicenControl</h1>
+		<p class="text-muted">Municipalidad Distrital de Independencia</p>
+	</div>
+
+	<main class="container pb-5" style="max-width: 720px;">
+		<div class="card shadow-sm">
+			<div class="card-body p-4">
+				<h2 class="h4 mb-3">Crear cuenta</h2>
+				<p class="text-muted">Registra tus datos para presentar tu solicitud de licencia de funcionamiento.</p>
+
+				<div class="alert alert-success" th:if="${mensaje}">
+					<span th:text="${mensaje}"></span>
+					<a th:href="@{/login}" class="alert-link">Ir a iniciar sesión</a>
+				</div>
+
+				<form th:action="@{/registro}" th:object="${cuenta}" method="post" novalidate>
+					<div class="mb-3">
+						<label for="dni" class="form-label">DNI</label>
+						<div class="input-group">
+							<input type="text" class="form-control" th:field="*{dni}" maxlength="8"
+								placeholder="8 dígitos" th:classappend="${#fields.hasErrors('dni')} ? 'is-invalid'">
+							<button type="button" class="btn btn-outline-secondary" id="btnBuscar">Buscar</button>
+						</div>
+						<div class="text-danger small" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
+						<div class="small mt-1" id="mensajeReniec"></div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label for="nombres" class="form-label">Nombres</label>
+							<input type="text" class="form-control" th:field="*{nombres}" maxlength="100"
+								th:classappend="${#fields.hasErrors('nombres')} ? 'is-invalid'">
+							<div class="text-danger small" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></div>
+						</div>
+						<div class="col-md-6 mb-3">
+							<label for="apellidos" class="form-label">Apellidos</label>
+							<input type="text" class="form-control" th:field="*{apellidos}" maxlength="100"
+								th:classappend="${#fields.hasErrors('apellidos')} ? 'is-invalid'">
+							<div class="text-danger small" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label for="correo" class="form-label">Correo electrónico</label>
+							<input type="email" class="form-control" th:field="*{correo}" maxlength="100"
+								th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid'">
+							<div class="text-danger small" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+						</div>
+						<div class="col-md-6 mb-3">
+							<label for="telefono" class="form-label">Teléfono (opcional)</label>
+							<input type="text" class="form-control" th:field="*{telefono}" maxlength="9"
+								th:classappend="${#fields.hasErrors('telefono')} ? 'is-invalid'">
+							<div class="text-danger small" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+						</div>
+					</div>
+
+					<div class="mb-4">
+						<label for="clave" class="form-label">Contraseña</label>
+						<input type="password" class="form-control" th:field="*{clave}" maxlength="60"
+							th:classappend="${#fields.hasErrors('clave')} ? 'is-invalid'">
+						<div class="text-danger small" th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></div>
+					</div>
+
+					<button type="submit" class="btn btn-primary">Crear cuenta</button>
+					<a th:href="@{/login}" class="btn btn-secondary">Cancelar</a>
+				</form>
+			</div>
+		</div>
+	</main>
+
+	<script>
+		const btnBuscar = document.getElementById('btnBuscar');
+		const campoDni = document.getElementById('dni');
+		const campoNombres = document.getElementById('nombres');
+		const campoApellidos = document.getElementById('apellidos');
+		const mensaje = document.getElementById('mensajeReniec');
+
+		function avisar(texto, clase)
+		{
+			mensaje.textContent = texto;
+			mensaje.className = 'small mt-1 ' + clase;
+		}
+
+		btnBuscar.addEventListener('click', async function ()
+		{
+			const dni = campoDni.value.trim();
+
+			if (!/^\d{8}$/.test(dni))
+			{
+				avisar('Ingrese un DNI de 8 dígitos.', 'text-danger');
+				return;
+			}
+
+			avisar('Buscando...', 'text-muted');
+
+			try
+			{
+				const respuesta = await fetch('/api/reniec/' + dni);
+
+				if (respuesta.status === 404)
+				{
+					avisar('DNI no encontrado en RENIEC. Ingrese los datos manualmente.', 'text-warning');
+					return;
+				}
+
+				if (!respuesta.ok)
+				{
+					avisar('No se pudo consultar. Intente de nuevo.', 'text-danger');
+					return;
+				}
+
+				const persona = await respuesta.json();
+				campoNombres.value = persona.nombres;
+				campoApellidos.value = persona.apellidos;
+				avisar('Datos encontrados.', 'text-success');
+			}
+			catch (e)
+			{
+				avisar('No se pudo consultar. Intente de nuevo.', 'text-danger');
+			}
+		});
+	</script>
+</body>
+</html>
