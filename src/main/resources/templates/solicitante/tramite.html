@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mi trámite - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+	  <aside th:replace="~{fragments/layout :: sidebar('tramites')}"></aside>
+	
+	  <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+	    <header th:replace="~{fragments/layout :: encabezado}"></header>
+	
+	    <main class="flex-grow-1">
+	      <div class="alert alert-success" th:if="${ok}" th:text="${ok}"></div>
+	      <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+	
+	      <div class="panel mb-3 h-auto">
+	        <div class="panel-titulo">
+	          <h2><i class="bi bi-folder2-open"></i>
+	            <span th:text="${exp.numero != null} ? 'Expediente ' + ${exp.numero} : 'Borrador de trámite'">Expediente</span></h2>
+	          <span class="chip"
+	                th:classappend="${exp.estado == 'BORRADOR'} ? 'c-gris' : (${exp.estado == 'PAGADO_SIN_ENVIO'} ? 'c-amarillo' : 'c-azul')"
+	                th:text="${exp.estado}">ESTADO</span>
+	        </div>
+	        <dl class="row mb-0 small">
+	          <dt class="col-sm-3">Nombre comercial</dt><dd class="col-sm-9" th:text="${exp.nombreComercial}"></dd>
+	          <dt class="col-sm-3">Giro</dt><dd class="col-sm-9" th:text="${exp.giro.nombre}"></dd>
+	          <dt class="col-sm-3">Dirección</dt>
+	          <dd class="col-sm-9" th:text="${exp.establecimiento.viaTipo + ' ' + exp.establecimiento.viaNombre + ' ' + exp.establecimiento.numero}"></dd>
+	          <dt class="col-sm-3">Zona (SIG)</dt><dd class="col-sm-9" th:text="${exp.establecimiento.zona.nombre}"></dd>
+	          <dt class="col-sm-3">Área</dt><dd class="col-sm-9" th:text="${exp.establecimiento.areaM2 + ' m²'}"></dd>
+	          <dt class="col-sm-3">Plazo máximo</dt>
+	          <dd class="col-sm-9" th:text="${exp.fechaLimite != null} ? ${#temporals.format(exp.fechaLimite, 'dd/MM/yyyy')} : 'Se asigna al enviar'"></dd>
+	        </dl>
+	      </div>
+	
+	      <!-- P1: PAGAR -->
+	      <div class="panel mb-3 h-auto" th:if="${exp.estado == 'BORRADOR'}">
+	        <div class="panel-titulo"><h2><i class="bi bi-credit-card"></i>Paga el derecho de trámite</h2></div>
+	        <form th:action="@{/solicitante/tramite/{id}/pagar(id=${exp.idExpediente})}" method="post" class="row g-3 align-items-end">
+	          <div class="col-md-4">
+	            <label class="form-label">Medio de pago</label>
+	            <select name="medio" class="form-select">
+	              <option value="TARJETA">Tarjeta</option>
+	              <option value="BILLETERA">Billetera digital</option>
+	              <option value="CAJA">Caja</option>
+	            </select>
+	          </div>
+	          <div class="col-md-4"><button class="btn btn-muni" type="submit">Pagar S/ 120.50</button></div>
+	        </form>
+	      </div>
+	
+	      <!-- P2: ENVIAR -->
+	      <div class="panel mb-3 h-auto" th:if="${exp.estado == 'PAGADO_SIN_ENVIO'}">
+	        <div class="panel-titulo"><h2><i class="bi bi-send"></i>Envía tu trámite</h2></div>
+	        <p class="small" th:each="p : ${pagos}" th:text="'Recibo ' + ${p.numeroRecibo} + ' · S/ ' + ${p.monto}"></p>
+	        <form th:action="@{/solicitante/tramite/{id}/enviar(id=${exp.idExpediente})}" method="post">
+	          <button class="btn btn-muni" type="submit"><i class="bi bi-send me-1"></i> Enviar trámite</button>
+	        </form>
+	      </div>
+	
+	      <!-- ENVIADO -->
+	      <div class="panel mb-3 h-auto" th:if="${exp.estado == 'PENDIENTE_REVISION'}">
+	        <p class="mb-0">Tu trámite está en <strong>revisión</strong>. Se resolverá a más tardar el
+	          <strong th:text="${#temporals.format(exp.fechaLimite, 'dd/MM/yyyy')}"></strong>.</p>
+	      </div>
+	
+	      <!-- DOCUMENTOS ADJUNTOS -->
+	      <div class="panel mb-3 h-auto">
+	        <div class="panel-titulo"><h2><i class="bi bi-paperclip"></i>Documentos adjuntos</h2></div>
+	
+	        <p class="small text-muted" th:if="${documentos.isEmpty()}">
+	          Aún no adjuntaste documentos. Debes subir la copia de tu DNI antes de enviar el trámite.
+	        </p>
+	
+	        <div class="fila" th:each="d : ${documentos}">
+	          <div class="ico"><i class="bi bi-file-earmark-text"></i></div>
+	          <div class="txt">
+	            <strong th:text="${d.tipo}">TIPO</strong>
+	            <small th:text="${d.nombreArchivo}">archivo.pdf</small>
+	          </div>
+	          <a th:href="@{/solicitante/tramite/{id}/documentos/{doc}(id=${exp.idExpediente},doc=${d.idDocumento})}"
+	             target="_blank" class="small">Ver</a>
+	        </div>
+	
+	        <form th:if="${exp.estado == 'BORRADOR' or exp.estado == 'PAGADO_SIN_ENVIO'}"
+	              th:action="@{/solicitante/tramite/{id}/documentos(id=${exp.idExpediente})}"
+	              method="post" enctype="multipart/form-data" class="row g-3 align-items-end mt-1">
+	          <div class="col-md-4">
+	            <label class="form-label">Tipo de documento</label>
+	            <select name="tipo" class="form-select">
+	              <option value="COPIA_DNI_CE">Copia de DNI o carné de extranjería</option>
+	              <option value="CARTA_PODER_LEGALIZADA">Carta poder legalizada (persona natural con representante)</option>
+	              <option value="VIGENCIA_PODER">Vigencia de poder (persona jurídica)</option>
+	            </select>
+	          </div>
+	          <div class="col-md-5">
+	            <label class="form-label">Archivo (PDF, JPG o PNG, máx. 5 MB)</label>
+	            <input type="file" name="archivo" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+	          </div>
+	          <div class="col-md-3">
+	            <button type="submit" class="btn btn-muni"><i class="bi bi-upload me-1"></i> Adjuntar</button>
+	          </div>
+	        </form>
+	      </div>
+	
+	      <a class="btn btn-outline-secondary mb-4" th:href="@{/solicitante/inicio}">Volver al inicio</a>
+	    </main>
+	
+	    <footer th:replace="~{fragments/layout :: pie}"></footer>
+	  </div>
+	</div>
+	
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+
+</html>

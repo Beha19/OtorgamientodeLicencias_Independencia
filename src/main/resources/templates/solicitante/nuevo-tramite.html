@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Nuevo trámite - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+	  <aside th:replace="~{fragments/layout :: sidebar('tramites')}"></aside>
+	
+	  <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+	    <header th:replace="~{fragments/layout :: encabezado}"></header>
+	
+	    <main class="flex-grow-1">
+	      <form th:action="@{/solicitante/tramite}" th:object="${form}" method="post" novalidate>
+	
+	        <div class="alert alert-danger" th:if="${errorNegocio}" th:text="${errorNegocio}"></div>
+	        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">Revisa los campos marcados en rojo.</div>
+	
+	        <!-- I. MODALIDAD -->
+	        <div class="panel mb-3 h-auto">
+	          <div class="panel-titulo"><h2><i class="bi bi-ui-radios"></i>I. Modalidad del trámite que solicita</h2></div>
+	          <div class="row g-3">
+	            <div class="col-md-4">
+	              <label class="form-check"><input class="form-check-input" type="radio" th:field="*{modalidad}" value="INDETERMINADA"><span class="form-check-label">Licencia indeterminada</span></label>
+	              <label class="form-check"><input class="form-check-input" type="radio" th:field="*{modalidad}" value="TEMPORAL"><span class="form-check-label">Licencia temporal</span></label>
+	            </div>
+	            <div class="col-md-4">
+	              <label class="form-label">Fin de vigencia (solo si es temporal)</label>
+	              <input type="date" class="form-control" th:field="*{fechaFinVigencia}">
+	            </div>
+	          </div>
+	        </div>
+	
+	        <!-- II. SOLICITANTE -->
+	        <div class="panel mb-3 h-auto">
+	          <div class="panel-titulo"><h2><i class="bi bi-person-vcard"></i>II. Datos del solicitante</h2></div>
+	          <div class="row g-3">
+	            <div class="col-md-12">
+	              <label class="form-label">Apellidos y nombres</label>
+	              <input class="form-control" disabled th:value="${session.usuario.apellidos + ', ' + session.usuario.nombres}">
+	            </div>
+	            <div class="col-md-3">
+              		<label class="form-label">N° DNI</label>
+              		<input class="form-control" disabled th:value="${perfil.dni}">
+            	</div>
+            	<div class="col-md-3">
+              		<label class="form-label">N° teléfono</label>
+              		<input class="form-control" disabled th:value="${perfil.telefono}">
+           		</div>
+	            <div class="col-md-6">
+	              <label class="form-label">Correo electrónico</label>
+	              <input class="form-control" disabled th:value="${session.usuario.correo}">
+	            </div>
+	            <div class="col-md-4">
+	              <label class="form-label">Tipo de persona</label>
+	              <select class="form-select" th:field="*{tipoPersona}">
+	                <option value="NATURAL">Persona natural</option>
+	                <option value="JURIDICA">Persona jurídica</option>
+	              </select>
+	            </div>
+	            <div class="col-md-3">
+	              <label class="form-label">RUC (solo jurídica)</label>
+	              <input class="form-control" maxlength="11" th:field="*{ruc}">
+	            </div>
+	            <div class="col-md-5">
+	              <label class="form-label">Razón social (solo jurídica)</label>
+	              <input class="form-control" th:field="*{razonSocial}">
+	            </div>
+	          </div>
+	        </div>
+	
+	        <!-- III. REPRESENTANTE -->
+	        <div class="panel mb-3 h-auto">
+	          <div class="panel-titulo"><h2><i class="bi bi-person-badge"></i>III. Representante legal o apoderado</h2></div>
+	          <label class="form-check mb-3"><input class="form-check-input" type="checkbox" th:field="*{conRepresentante}"><span class="form-check-label">Actúo mediante representante</span></label>
+	          <div class="row g-3">
+	            <div class="col-md-3">
+	              <label class="form-label">N° DNI</label>
+	              <input class="form-control" maxlength="8" th:field="*{repDni}">
+	            </div>
+	            <div class="col-md-4">
+	              <label class="form-label">Nombres</label>
+	              <input class="form-control" th:field="*{repNombres}">
+	            </div>
+	            <div class="col-md-5">
+	              <label class="form-label">Apellidos</label>
+	              <input class="form-control" th:field="*{repApellidos}">
+	            </div>
+	          </div>
+	        </div>
+	
+	        <!-- IV. ESTABLECIMIENTO -->
+	        <div class="panel mb-3 h-auto">
+	          <div class="panel-titulo"><h2><i class="bi bi-shop"></i>IV. Datos del establecimiento</h2></div>
+	          <div class="row g-3">
+	            <div class="col-md-6">
+	              <label class="form-label">Nombre comercial</label>
+	              <input class="form-control" th:field="*{nombreComercial}" th:errorclass="is-invalid">
+	              <div class="invalid-feedback" th:errors="*{nombreComercial}"></div>
+	            </div>
+	            <div class="col-md-6">
+	              <label class="form-label">Giro</label>
+	              <select class="form-select" th:field="*{idGiro}" th:errorclass="is-invalid">
+	                <option value="">Elige el giro...</option>
+	                <option th:each="g : ${giros}" th:value="${g.idGiro}"
+	                        th:text="${g.nombre + ' (CIIU ' + g.codigoCiiu + ')'}"></option>
+	              </select>
+	              <div class="invalid-feedback" th:errors="*{idGiro}"></div>
+	            </div>
+	            <div class="col-md-6">
+	              <label class="form-label">Actividad</label>
+	              <input class="form-control" maxlength="255" th:field="*{actividad}" placeholder="Ej.: Venta de abarrotes">
+	            </div>
+	            <div class="col-md-6">
+	              <label class="form-label">N° de autorización sectorial (si corresponde)</label>
+	              <input class="form-control" maxlength="30" th:field="*{autorizacionSectorial}" placeholder="Déjalo vacío si no aplica">
+	              <div class="form-text">Solo si tu giro necesita un permiso de otra entidad. Una bodega normal no lo necesita.</div>
+	            </div>
+	
+	            <div class="col-md-2">
+	              <label class="form-label">Tipo de vía</label>
+	              <select class="form-select" th:field="*{viaTipo}" th:errorclass="is-invalid">
+	                <option value="">Elige</option>
+	                <option value="AV">Av.</option>
+	                <option value="JR">Jr.</option>
+	                <option value="CALLE">Calle</option>
+	                <option value="PSJE">Psje.</option>
+	              </select>
+	              <div class="invalid-feedback" th:errors="*{viaTipo}"></div>
+	            </div>
+	            <div class="col-md-4">
+	              <label class="form-label">Nombre de la vía</label>
+	              <input class="form-control" th:field="*{viaNombre}" th:errorclass="is-invalid">
+	              <div class="invalid-feedback" th:errors="*{viaNombre}"></div>
+	            </div>
+	            <div class="col-md-2">
+	              <label class="form-label">Número</label>
+	              <input class="form-control" maxlength="10" th:field="*{numero}" th:errorclass="is-invalid">
+	              <div class="invalid-feedback" th:errors="*{numero}"></div>
+	            </div>
+	            <div class="col-md-2">
+	              <label class="form-label">Interior</label>
+	              <input class="form-control" maxlength="20" th:field="*{interior}">
+	            </div>
+	            <div class="col-md-2">
+	              <label class="form-label">Área (m²)</label>
+	              <input type="number" step="0.01" class="form-control" th:field="*{areaM2}" th:errorclass="is-invalid">
+	              <div class="invalid-feedback" th:errors="*{areaM2}"></div>
+	            </div>
+	            <div class="col-12">
+	              <label class="form-label">Referencia</label>
+	              <input class="form-control" th:field="*{referencia}">
+	            </div>
+	
+				<!-- MAPA CON PIN (SIG) -->
+				<div class="col-12">
+				  <label class="form-label">Ubica tu local en el mapa (haz clic para colocar el pin)</label>
+				  <div id="mapa" th:data-geojson="@{/data/zonas_independencia.geojson}"
+				       style="height:380px; border-radius:12px; border:1px solid var(--borde)"></div>
+				  <div class="small mt-2" id="infoUbicacion">Aún no marcaste la ubicación.</div>
+				  <div class="text-danger small"
+				       th:if="${#fields.hasErrors('latitud') or #fields.hasErrors('longitud')}">
+				    Marca la ubicación de tu local en el mapa.
+				  </div>
+				  <input type="hidden" th:field="*{latitud}">
+				  <input type="hidden" th:field="*{longitud}">
+				</div>	
+	          </div>
+	        </div>
+	
+	        <!-- V. DECLARACIÓN JURADA DE OBSERVANCIA DE CONDICIONES DE SEGURIDAD -->
+	        <div class="panel mb-3 h-auto">
+	          <div class="panel-titulo"><h2><i class="bi bi-shield-check"></i>V. Declaración jurada de observancia de condiciones de seguridad <small class="text-muted ms-2">(Ley N° 28976)</small></h2></div>
+	
+	          <h6 class="mb-2">Datos complementarios del local</h6>
+	          <div class="row g-3 mb-3">
+	            <div class="col-md-4">
+	              <label class="form-label">Aforo (personas)</label>
+	              <input type="number" class="form-control" th:field="*{aforo}">
+	            </div>
+	            <div class="col-md-4">
+	              <label class="form-label">Antigüedad de la edificación (años)</label>
+	              <input type="number" class="form-control" th:field="*{antiguedadAnios}">
+	            </div>
+	            <div class="col-md-4">
+	              <label class="form-label">Área techada total (m²)</label>
+	              <input type="number" step="0.01" class="form-control" th:field="*{areaTechadaM2}">
+	            </div>
+	          </div>
+	
+	          <p class="mb-2">El propietario y/o conductor del local declara bajo juramento lo siguiente:
+	            <span class="text-muted small">(marque si cumple; déjelo sin marcar si no corresponde)</span></p>
+	
+	          <div th:each="c, st : ${condiciones}">
+				<h6 class="mt-3 mb-2" th:if="${st.first or c.grupo != condiciones[st.index - 1].grupo}" th:text="${c.grupo}">Grupo</h6>
+				<label class="form-check">
+              		<input class="form-check-input" type="checkbox" value="true"
+                     th:name="${'respuestas[' + c.idCondicion + ']'}"
+                     th:checked="${form.respuestas.get(c.idCondicion) == true}">
+              		<span class="form-check-label" th:text="${c.descripcion}">Condición</span>
+            	</label>
+	          </div>
+	
+	          <hr>
+	          <label class="form-check">
+	            <input class="form-check-input" type="checkbox" th:field="*{aceptaDj}" th:errorclass="is-invalid">
+	            <span class="form-check-label">Declaro bajo juramento que la información es veraz y que cumplo las condiciones marcadas.</span>
+	          </label>
+	          <div class="text-danger small" th:errors="*{aceptaDj}"></div>
+	        </div>
+	
+	        <div class="d-flex gap-2 mb-4">
+	          <button type="submit" class="btn btn-muni"><i class="bi bi-save me-1"></i> Guardar borrador</button>
+	          <a class="btn btn-outline-secondary" th:href="@{/solicitante/inicio}">Cancelar</a>
+	        </div>
+	      </form>
+	    </main>
+	
+	    <footer th:replace="~{fragments/layout :: pie}"></footer>
+	  </div>
+	</div>
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+	
+	<script>
+		document.addEventListener('DOMContentLoaded', function ()
+		{
+		  const q = n => document.querySelector('[name="' + n + '"]');
+		
+		  // Representante: solo se escribe si marca "Actúo mediante representante"
+		  const rep = document.querySelector('input[type="checkbox"][name="conRepresentante"]');
+		  const camposRep = ['repDni', 'repNombres', 'repApellidos'].map(q);
+		  function sincRep() { camposRep.forEach(c => c.disabled = !rep.checked); }
+		  rep.addEventListener('change', sincRep);
+		  sincRep();
+		
+		  // RUC y razón social: solo para persona jurídica (que además exige representante)
+		  const tipo = q('tipoPersona'), ruc = q('ruc'), razon = q('razonSocial');
+		  function sincPersona() {
+		    const juridica = tipo.value === 'JURIDICA';
+		    ruc.disabled = !juridica;
+		    razon.disabled = !juridica;
+		    if (juridica) { rep.checked = true; sincRep(); }
+		  }
+		  tipo.addEventListener('change', sincPersona);
+		  sincPersona();
+		
+		  // Fin de vigencia: solo si la licencia es temporal
+		  const fin = q('fechaFinVigencia');
+		  function sincModalidad() {
+		    const marcada = document.querySelector('input[name="modalidad"]:checked');
+		    fin.disabled = !(marcada && marcada.value === 'TEMPORAL');
+		  }
+		  document.querySelectorAll('input[name="modalidad"]').forEach(r => r.addEventListener('change', sincModalidad));
+		  sincModalidad();
+		});
+	</script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+	<script th:src="@{/js/nuevo-tramite-mapa.js}"></script>
+</body>
+
+</html>
