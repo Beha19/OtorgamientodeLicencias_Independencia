@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Bandeja de firma - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+		<aside th:replace="~{fragments/layout :: sidebar('bandeja')}"></aside>
+
+		<div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+			<header th:replace="~{fragments/layout :: encabezado}"></header>
+
+			<main class="flex-grow-1">
+				<div class="alert alert-success" th:if="${ok}" th:text="${ok}"></div>
+				<div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+				<div class="panel">
+					<div class="panel-titulo">
+						<h2><i class="bi bi-pen"></i>Bandeja de firma</h2>
+					</div>
+					<p class="small text-muted">Expedientes aprobados por el tecnico que aun no tienen licencia. Al firmar se emite la licencia.</p>
+
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered align-middle">
+							<thead>
+								<tr>
+									<th>N. de expediente</th>
+									<th>Nombre comercial</th>
+									<th>Titular</th>
+									<th>Giro</th>
+									<th>Aprobado por</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="e : ${expedientes}">
+									<td th:text="${e.numero} ?: '&#8212;'"></td>
+									<td th:text="${e.nombreComercial}"></td>
+									<td th:text="${e.solicitante.nombres + ' ' + e.solicitante.apellidos}"></td>
+									<td th:text="${e.giro.nombre}"></td>
+									<td th:text="${e.tecnicoAsignado != null} ? ${e.tecnicoAsignado.nombres + ' ' + e.tecnicoAsignado.apellidos} : '&#8212;'"></td>
+									<td>
+										<form th:action="@{/subgerente/bandeja/{id}/firmar(id=${e.idExpediente})}" method="post"
+											onsubmit="return confirm('Firmar y emitir la licencia?');">
+											<button type="submit" class="btn btn-sm btn-muni">Firmar</button>
+										</form>
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(expedientes)}">
+									<td colspan="6" class="text-center text-muted">No hay expedientes pendientes de firma.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</main>
+
+			<footer th:replace="~{fragments/layout :: pie}"></footer>
+		</div>
+	</div>
+
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

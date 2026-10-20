@@ -55,7 +55,7 @@
 	    <th:block th:case="'REVISOR'">
 	      <a th:replace="~{this :: enlace(@{/revisor/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
 	      <div class="menu-titulo">Procesos</div>
-	      <a th:replace="~{this :: enlace('#', 'bi-inbox', 'Bandeja de revisión', 'bandeja', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace(@{/revisor/bandeja}, 'bi-inbox', 'Bandeja de revisión', 'bandeja', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace('#', 'bi-folder2-open', 'Expedientes', 'expedientes', ${activo})}"></a>
 	      <div class="menu-titulo">Cuenta</div>
 	      <a th:replace="~{this :: enlace('#', 'bi-bell', 'Notificaciones', 'notificaciones', ${activo})}"></a>
@@ -65,7 +65,7 @@
 	    <th:block th:case="'TECNICO'">
 	      <a th:replace="~{this :: enlace(@{/tecnico/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
 	      <div class="menu-titulo">Procesos</div>
-	      <a th:replace="~{this :: enlace('#', 'bi-clipboard-data', 'Bandeja de evaluación', 'bandeja', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace(@{/tecnico/bandeja}, 'bi-clipboard-data', 'Bandeja de evaluación', 'bandeja', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace('#', 'bi-folder2-open', 'Expedientes', 'expedientes', ${activo})}"></a>
 	      <div class="menu-titulo">Cuenta</div>
 	      <a th:replace="~{this :: enlace('#', 'bi-bell', 'Notificaciones', 'notificaciones', ${activo})}"></a>
@@ -75,7 +75,7 @@
 	    <th:block th:case="'SUBGERENTE'">
 	      <a th:replace="~{this :: enlace(@{/subgerente/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
 	      <div class="menu-titulo">Procesos</div>
-	      <a th:replace="~{this :: enlace('#', 'bi-pen', 'Bandeja de firma', 'bandeja', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace(@{/subgerente/bandeja}, 'bi-pen', 'Bandeja de firma', 'bandeja', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace('#', 'bi-folder2-open', 'Expedientes', 'expedientes', ${activo})}"></a>
 	      <div class="menu-titulo">Reportes</div>
 	      <a th:replace="~{this :: enlace('#', 'bi-award', 'Licencias emitidas', 'licencias', ${activo})}"></a>

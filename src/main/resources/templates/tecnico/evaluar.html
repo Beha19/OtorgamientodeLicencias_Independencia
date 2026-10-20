@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Evaluar expediente - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+		<aside th:replace="~{fragments/layout :: sidebar('bandeja')}"></aside>
+
+		<div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+			<header th:replace="~{fragments/layout :: encabezado}"></header>
+
+			<main class="flex-grow-1">
+				<div class="alert alert-success" th:if="${ok}" th:text="${ok}"></div>
+				<div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<h2 class="h5 mb-0"><i class="bi bi-clipboard-check me-2"></i>Evaluar expediente
+						<span th:text="${d.expediente.numero}"></span></h2>
+					<a class="btn btn-secondary btn-sm" th:href="@{/tecnico/bandeja}">Volver a la bandeja</a>
+				</div>
+
+				<div th:replace="~{fragments/componentes :: datos(${d}, ${rutaDocs})}"></div>
+
+				<div class="row g-3">
+					<div class="col-lg-5">
+						<div class="panel">
+							<div class="panel-titulo"><h2><i class="bi bi-check2-circle"></i>Aprobar</h2></div>
+							<p class="small text-muted">Se valida que el giro este permitido en la zona del local.
+								Al aprobar, el expediente pasa a la firma del Sub Gerente.</p>
+							<form th:action="@{/tecnico/evaluar/{id}/aprobar(id=${d.expediente.idExpediente})}" method="post">
+								<button type="submit" class="btn btn-success" th:disabled="${!d.usoDeSueloPermitido}">Aprobar expediente</button>
+								<div class="small text-danger mt-2" th:unless="${d.usoDeSueloPermitido}">
+									El giro no esta permitido en esta zona: solo puedes denegar.
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="col-lg-7">
+						<div class="panel">
+							<div class="panel-titulo"><h2><i class="bi bi-x-circle"></i>Denegar</h2></div>
+							<form th:action="@{/tecnico/evaluar/{id}/denegar(id=${d.expediente.idExpediente})}" method="post">
+								<label for="motivo" class="form-label small">Motivo de la denegacion (se registra con su numero de oficio)</label>
+								<textarea class="form-control mb-2" id="motivo" name="motivo" rows="3" required></textarea>
+								<button type="submit" class="btn btn-danger">Denegar expediente</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</main>
+
+			<footer th:replace="~{fragments/layout :: pie}"></footer>
+		</div>
+	</div>
+
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

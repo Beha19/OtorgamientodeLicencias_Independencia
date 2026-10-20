@@ -31,7 +31,7 @@
 	            <div class="leyenda"><span><span class="semaforo s-verde me-2"></span>A tiempo</span><strong>1</strong></div>
 	            <div class="leyenda"><span><span class="semaforo s-amarillo me-2"></span>Por vencer</span><strong>1</strong></div>
 	            <div class="leyenda"><span><span class="semaforo s-rojo me-2"></span>Vence en 3 días o menos</span><strong>1</strong></div>
-	            <a class="btn btn-muni w-100 mt-3" href="#">Ir a la bandeja de revisión</a>
+	            <a class="btn btn-muni w-100 mt-3" th:href="@{/revisor/bandeja}">Ir a la bandeja de revisión</a>
 	          </div>
 	        </div>
 	      </div>
@@ -39,7 +39,7 @@
 	      <div class="row g-3">
 	        <div class="col-lg-7">
 	          <div class="panel">
-	            <div class="panel-titulo"><h2><i class="bi bi-hourglass-bottom"></i>Próximos a vencer</h2><a href="#">Ver bandeja</a></div>
+	            <div class="panel-titulo"><h2><i class="bi bi-hourglass-bottom"></i>Próximos a vencer</h2><a th:href="@{/revisor/bandeja}">Ver bandeja</a></div>
 	            <div class="fila"><div class="ico"><i class="bi bi-file-earmark"></i></div>
 	              <div class="txt"><strong>2026-000090 · Minimarket López</strong><small>María López · vence 20/10/2026</small></div>
 	              <span class="semaforo s-rojo"></span></div>

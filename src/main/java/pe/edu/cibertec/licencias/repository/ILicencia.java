@@ -13,7 +13,8 @@ import pe.edu.cibertec.licencias.entity.Licencia;
 public interface ILicencia extends JpaRepository<Licencia, Integer>
 {
     Optional<Licencia> findByExpediente_IdExpediente(Integer idExpediente);
-
+    @Query("SELECT MAX(l.numero) FROM Licencia l WHERE l.numero LIKE :prefijo")
+    Optional<String> ultimoNumero(@Param("prefijo") String prefijo);
     Optional<Licencia> findByNumero(String numero);
 
     @Query("""
@@ -24,6 +25,11 @@ public interface ILicencia extends JpaRepository<Licencia, Integer>
             ORDER BY l.fechaEmision DESC
             """)
     List<Licencia> buscar(@Param("desde") LocalDateTime desde,
+    		
+    		
+    		
             @Param("hasta") LocalDateTime hasta,
             @Param("giro") Integer giro);
+    
+    
 }
