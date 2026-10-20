@@ -78,7 +78,7 @@
 	      <a th:replace="~{this :: enlace('#', 'bi-pen', 'Bandeja de firma', 'bandeja', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace('#', 'bi-folder2-open', 'Expedientes', 'expedientes', ${activo})}"></a>
 	      <div class="menu-titulo">Reportes</div>
-	      <a th:replace="~{this :: enlace('#', 'bi-award', 'Licencias emitidas', 'licencias', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace(@{/subgerente/licencias}, 'bi-award', 'Licencias emitidas', 'licencias', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace('#', 'bi-file-earmark-pdf', 'Reportes', 'reportes', ${activo})}"></a>
 	      <div class="menu-titulo">Cuenta</div>
 	      <a th:replace="~{this :: enlace('#', 'bi-person', 'Mi cuenta', 'cuenta', ${activo})}"></a>
@@ -87,9 +87,9 @@
 	    <th:block th:case="'ADMIN'">
 	      <a th:replace="~{this :: enlace(@{/admin/inicio}, 'bi-house', 'Inicio', 'inicio', ${activo})}"></a>
 	      <div class="menu-titulo">Mantenimientos</div>
-	      <a th:replace="~{this :: enlace('#', 'bi-people', 'Usuarios', 'usuarios', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace(@{/admin/usuarios}, 'bi-people', 'Usuarios', 'usuarios', ${activo})}"></a>
 	      <a th:replace="~{this :: enlace('#', 'bi-geo-alt', 'Giros y zonas', 'giros', ${activo})}"></a>
-	      <a th:replace="~{this :: enlace('#', 'bi-calendar-event', 'Feriados', 'feriados', ${activo})}"></a>
+	      <a th:replace="~{this :: enlace(@{/admin/feriados}, 'bi-calendar-event', 'Feriados', 'feriados', ${activo})}"></a>
 	      <div class="menu-titulo">Cuenta</div>
 	      <a th:replace="~{this :: enlace('#', 'bi-person', 'Mi cuenta', 'cuenta', ${activo})}"></a>
 	    </th:block>
