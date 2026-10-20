@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Formulario de zona - LicenControl')}"></head>
+<body class="app-body">
+<div class="d-flex">
+    <aside th:replace="~{fragments/layout :: sidebar('giros')}"></aside>
+
+    <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+        <header th:replace="~{fragments/layout :: encabezado}"></header>
+
+        <main class="flex-grow-1 container-fluid p-4">
+            <h1 class="h3 mb-4"
+                th:text="${zona.idZona == null ? 'Registrar zona' : 'Editar zona'}">
+                Registrar zona
+            </h1>
+
+            <div class="panel p-4">
+                <form th:action="@{/admin/zonas/guardar}"
+                      th:object="${zona}" method="post">
+
+                    <input type="hidden" th:field="*{idZona}">
+
+                    <div class="mb-3">
+                        <label class="form-label" for="codigo">Código</label>
+                        <input class="form-control" id="codigo"
+                               type="text" th:field="*{codigo}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="nombre">Nombre</label>
+                        <input class="form-control" id="nombre"
+                               type="text" th:field="*{nombre}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" for="descripcion">Descripción</label>
+                        <textarea class="form-control" id="descripcion"
+                                  th:field="*{descripcion}" rows="3"></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" type="submit">
+                            Guardar
+                        </button>
+                        <a class="btn btn-outline-secondary"
+                           th:href="@{/admin/zonas}">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer th:replace="~{fragments/layout :: pie}"></footer>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
