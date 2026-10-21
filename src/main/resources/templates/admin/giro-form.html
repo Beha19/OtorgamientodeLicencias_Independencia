@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Formulario de giro - LicenControl')}"></head>
+
+<body class="app-body">
+    <div class="d-flex">
+        <aside th:replace="~{fragments/layout :: sidebar('giros')}"></aside>
+
+        <div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+            <header th:replace="~{fragments/layout :: encabezado}"></header>
+
+            <main class="flex-grow-1 container-fluid p-4">
+                <h1 class="h3 mb-4"
+                    th:text="${giro.idGiro == null ? 'Registrar giro' : 'Editar giro'}">
+                    Registrar giro
+                </h1>
+
+                <div class="panel p-4">
+                    <form th:action="@{/admin/giros/guardar}"
+                          th:object="${giro}" method="post">
+
+                        <input type="hidden" th:field="*{idGiro}">
+
+                        <div class="mb-3">
+                            <label class="form-label" for="codigoCiiu">Código CIIU</label>
+                            <input class="form-control" id="codigoCiiu"
+                                   type="text" th:field="*{codigoCiiu}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="nombre">Nombre del giro</label>
+                            <input class="form-control" id="nombre"
+                                   type="text" th:field="*{nombre}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="nivelRiesgo">Nivel de riesgo</label>
+                            <select class="form-select" id="nivelRiesgo"
+                                    th:field="*{nivelRiesgo}" required>
+                                <option value="">Seleccione un nivel</option>
+                                <option value="BAJO">Bajo</option>
+                                <option value="MEDIO">Medio</option>
+                                <option value="ALTO">Alto</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <h2 class="h5">Zonas permitidas</h2>
+                            <p class="text-muted small">
+                                Selecciona las zonas donde se permite este giro.
+                            </p>
+
+                            <div th:if="${#lists.isEmpty(zonas)}"
+                                 class="alert alert-warning">
+                                No hay zonas activas registradas.
+                            </div>
+
+                            <div class="form-check mb-2" th:each="zona : ${zonas}">
+                                <input class="form-check-input" type="checkbox"
+                                       name="zonasIds" th:value="${zona.idZona}"
+                                       th:checked="${zonasSeleccionadas != null
+                                           and zonasSeleccionadas.contains(zona.idZona)}"
+                                       th:id="${'zona-' + zona.idZona}">
+                                <label class="form-check-label"
+                                       th:for="${'zona-' + zona.idZona}"
+                                       th:text="${zona.codigo + ' - ' + zona.nombre}">
+                                    Zona
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-save me-1"></i> Guardar
+                            </button>
+                            <a class="btn btn-outline-secondary"
+                               th:href="@{/admin/giros}">
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </main>
+
+            <footer th:replace="~{fragments/layout :: pie}"></footer>
+        </div>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
