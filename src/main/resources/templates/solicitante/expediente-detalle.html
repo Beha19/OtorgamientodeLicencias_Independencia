@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalle del expediente - LicenControl')}"></head>
+
+<body class="app-body">
+	<div class="d-flex">
+		<aside th:replace="~{fragments/layout :: sidebar('expedientes')}"></aside>
+
+		<div class="flex-grow-1 d-flex flex-column" style="min-width:0">
+			<header th:replace="~{fragments/layout :: encabezado}"></header>
+
+			<main class="flex-grow-1" th:with="e=${detalle.expediente}">
+
+				<div class="panel mb-3">
+					<div class="panel-titulo">
+						<h2><i class="bi bi-folder2-open"></i>
+							Expediente <span th:text="${e.numero} ?: 'Borrador (sin número)'"></span>
+						</h2>
+						<a th:href="@{/solicitante/expedientes}" class="btn btn-secondary btn-sm">
+							<i class="bi bi-arrow-left"></i> Volver
+						</a>
+					</div>
+
+					<div class="row g-3">
+						<div class="col-md-4">
+							<small class="text-muted d-block">Nombre comercial</small>
+							<strong th:text="${e.nombreComercial}"></strong>
+						</div>
+						<div class="col-md-4">
+							<small class="text-muted d-block">Giro</small>
+							<strong th:text="${e.giro.nombre}"></strong>
+						</div>
+						<div class="col-md-4">
+							<small class="text-muted d-block">Estado</small>
+							<span class="badge" th:text="${e.estado}"
+								th:classappend="${e.estado == 'APROBADO' ? 'bg-success'
+									: (e.estado == 'DENEGADO' or e.estado == 'IMPROCEDENTE' ? 'bg-danger'
+									: (e.estado == 'OBSERVADO' ? 'bg-warning text-dark'
+									: (e.estado == 'BORRADOR' or e.estado == 'PAGADO_SIN_ENVIO' ? 'bg-secondary' : 'bg-info text-dark')))}"></span>
+						</div>
+
+						<div class="col-md-4">
+							<small class="text-muted d-block">Actividad</small>
+							<span th:text="${e.actividad} ?: '—'"></span>
+						</div>
+						<div class="col-md-4">
+							<small class="text-muted d-block">Modalidad</small>
+							<span th:text="${e.modalidad}"></span>
+							<span th:if="${e.fechaFinVigencia != null}"
+								th:text="'hasta ' + ${#temporals.format(e.fechaFinVigencia, 'dd/MM/yyyy')}"></span>
+						</div>
+						<div class="col-md-4">
+							<small class="text-muted d-block">Tipo de persona</small>
+							<span th:text="${e.tipoPersona}"></span>
+						</div>
+
+						<div class="col-md-4" th:if="${e.ruc != null}">
+							<small class="text-muted d-block">RUC</small>
+							<span th:text="${e.ruc}"></span>
+						</div>
+						<div class="col-md-4" th:if="${e.razonSocial != null}">
+							<small class="text-muted d-block">Razón social</small>
+							<span th:text="${e.razonSocial}"></span>
+						</div>
+
+						<div class="col-md-4">
+							<small class="text-muted d-block">Fecha de registro</small>
+							<span th:text="${#temporals.format(e.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span>
+						</div>
+						<div class="col-md-4">
+							<small class="text-muted d-block">Fecha de envío</small>
+							<span th:text="${e.fechaEnvio != null} ? ${#temporals.format(e.fechaEnvio, 'dd/MM/yyyy HH:mm')} : '—'"></span>
+						</div>
+						<div class="col-md-4">
+							<small class="text-muted d-block">Fecha límite</small>
+							<span th:text="${e.fechaLimite != null} ? ${#temporals.format(e.fechaLimite, 'dd/MM/yyyy')} : '—'"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="panel mb-3">
+					<div class="panel-titulo"><h2><i class="bi bi-shop"></i>Local</h2></div>
+
+					<div class="row g-3" th:with="l=${e.establecimiento}">
+						<div class="col-md-6">
+							<small class="text-muted d-block">Dirección</small>
+							<span th:text="${l.viaTipo + ' ' + l.viaNombre + ' ' + l.numero + (l.interior != null and l.interior != '' ? ' Int. ' + l.interior : '')}"></span>
+						</div>
+						<div class="col-md-3">
+							<small class="text-muted d-block">Área</small>
+							<span th:text="${l.areaM2} + ' m²'"></span>
+						</div>
+						<div class="col-md-3">
+							<small class="text-muted d-block">Zona</small>
+							<span th:text="${l.zona.codigo + ' - ' + l.zona.nombre}"></span>
+						</div>
+						<div class="col-12" th:if="${l.referencia != null and l.referencia != ''}">
+							<small class="text-muted d-block">Referencia</small>
+							<span th:text="${l.referencia}"></span>
+						</div>
+					</div>
+				</div>
+
+
+			</main>
+
+			<footer th:replace="~{fragments/layout :: pie}"></footer>
+		</div>
+	</div>
+
+	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
