@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{fragments/layout :: head('Mis expedientes - LicenControl')}"></head>
 
 <body class="app-body">
@@ -25,6 +26,7 @@
 									<th>Estado</th>
 									<th>Fecha de registro</th>
 									<th>Fecha límite</th>
+									<th>Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -40,10 +42,19 @@
 												: (e.estado == 'BORRADOR' or e.estado == 'PAGADO_SIN_ENVIO' ? 'bg-secondary' : 'bg-info text-dark')))}"></span>
 									</td>
 									<td th:text="${#temporals.format(e.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></td>
-									<td th:text="${e.fechaLimite != null} ? ${#temporals.format(e.fechaLimite, 'dd/MM/yyyy')} : '—'"></td>
+									<td
+										th:text="${e.fechaLimite != null} ? ${#temporals.format(e.fechaLimite, 'dd/MM/yyyy')} : '—'">
+									</td>
+									<td>
+										<a th:href="@{/solicitante/expedientes/{id}(id=${e.idExpediente})}"
+											class="btn btn-sm btn-outline-primary">
+											<i class="bi bi-eye"></i> Ver detalle
+										</a>
+									</td>
 								</tr>
 								<tr th:if="${#lists.isEmpty(expedientes)}">
-									<td colspan="6" class="text-center text-muted">No tienes expedientes registrados.</td>
+									<td colspan="7" class="text-center text-muted">No tienes expedientes registrados.
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -57,4 +68,5 @@
 
 	<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>
+
 </html>
