@@ -152,69 +152,129 @@ WHERE l.id_licencia = $P{ID_LICENCIA}]]></query>
 	<detail>
 		<band height="429" splitType="Stretch">
 			<element kind="textField" uuid="7470bf16-1242-41e8-9ec2-e08489b814e5" x="158" y="20" width="158" height="30" fontSize="14.0" bold="false">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{numero_licencia}]]></expression>
 			</element>
 			<element kind="staticText" uuid="e67817f4-d2d1-4c51-980c-c3b78ecb7f9c" x="20" y="20" width="138" height="30" fontSize="13.0" bold="true">
-				<text><![CDATA[Numero de licencia]]></text>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<text><![CDATA[Numero de licencia:]]></text>
 			</element>
 			<element kind="textField" uuid="713d0d2c-ff42-4e00-8acc-d09cdde1dd17" x="158" y="52" width="158" height="30" fontSize="13.0" pattern="dd/MM/yyyy" hTextAlign="Left">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{fecha_emision}]]></expression>
 			</element>
 			<element kind="staticText" uuid="a91eb823-7fcb-400e-a375-26f0f6e2e804" x="20" y="52" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[Fecha de emision:]]></text>
 			</element>
 			<element kind="textField" uuid="d8a88456-362d-496e-9e62-2ec57ec7e46a" x="158" y="82" width="158" height="30" fontSize="13.0">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{titular}]]></expression>
 			</element>
 			<element kind="staticText" uuid="15de42dd-fb63-4141-88ca-c20a3cc402bf" x="20" y="82" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[Titular:]]></text>
 			</element>
 			<element kind="textField" uuid="ea9f3a72-77cc-45ff-a22a-9c4a74654e13" x="158" y="112" width="158" height="30" fontSize="13.0">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{dni_titular}]]></expression>
 			</element>
 			<element kind="staticText" uuid="37deedbf-ac83-49e2-bc20-14068863fd4a" x="20" y="112" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[DNI:]]></text>
 			</element>
 			<element kind="textField" uuid="c4c8721d-9614-4330-bf9d-459872828a82" x="156" y="140" width="259" height="30" fontSize="13.0">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{nombre_comercial}]]></expression>
 			</element>
 			<element kind="staticText" uuid="0f7b1b22-94b8-4c7f-865c-07126e5cc326" x="20" y="142" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[Nombre comercial:]]></text>
 			</element>
 			<element kind="textField" uuid="0bd04cd1-7abd-48cc-94b8-7663c0eb5db6" x="158" y="172" width="158" height="30" fontSize="13.0">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{giro}]]></expression>
 			</element>
 			<element kind="staticText" uuid="721c0408-3efa-4c21-9759-6f762fc2fa7b" x="18" y="172" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[Giro:]]></text>
 			</element>
 			<element kind="textField" uuid="1d982de7-3b52-465b-a9aa-a9bee333ec71" x="158" y="200" width="259" height="30" fontSize="13.0">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{direccion}]]></expression>
 			</element>
 			<element kind="staticText" uuid="150a9dc0-debd-4844-b881-415e39606afe" x="18" y="202" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[Direccion:]]></text>
 			</element>
 			<element kind="textField" uuid="b3e04781-47c2-4441-b6b8-24b54eb0253e" x="158" y="230" width="158" height="30" fontSize="13.0">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{area_m2}]]></expression>
 			</element>
 			<element kind="staticText" uuid="ba49a985-7c72-4bb7-a425-5da896fc59b5" x="18" y="232" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[Area del local (m2):]]></text>
 			</element>
 			<element kind="textField" uuid="adce10e4-47de-43ac-9539-ee8aa24914fd" x="158" y="260" width="158" height="30" fontSize="13.0">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{zona}]]></expression>
 			</element>
 			<element kind="staticText" uuid="d0f330e9-c722-4a90-9d51-4daab3b5ecaa" x="18" y="262" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[Zona:]]></text>
 			</element>
 			<element kind="textField" uuid="009f6130-4d4c-4426-88ef-3fca8d7a6c3e" x="158" y="292" width="158" height="30" fontSize="13.0">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<expression><![CDATA[$F{modalidad}]]></expression>
 			</element>
 			<element kind="staticText" uuid="2315572b-8b06-4eba-9896-6d6f06dc9e16" x="18" y="292" width="138" height="30" fontSize="13.0" bold="true">
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
 				<text><![CDATA[Modalidad:]]></text>
 			</element>
 			<element kind="textField" uuid="6a3594f9-03d7-48f7-840a-3323b47517c1" x="250" y="380" width="100" height="30" hTextAlign="Center">
 				<expression><![CDATA[$F{firmante}]]></expression>
 			</element>
-			<element kind="staticText" uuid="ad685ddc-cf81-4296-9de4-c7cb9509afea" x="193" y="380" width="53" height="30">
+			<element kind="staticText" uuid="ad685ddc-cf81-4296-9de4-c7cb9509afea" x="210" y="379" width="53" height="30">
 				<text><![CDATA[Firmante]]></text>
 			</element>
 			<element kind="line" uuid="c1a8e19d-773c-4f60-aab5-a2a9a8639fa9" x="170" y="379" width="200" height="1">
